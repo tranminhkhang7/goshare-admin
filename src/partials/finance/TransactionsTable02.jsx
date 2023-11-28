@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import TransactionItem from './TransactionsTableItem02';
 
 import Image01 from '../../images/transactions-image-01.svg';
@@ -10,12 +10,10 @@ import Image06 from '../../images/transactions-image-05.svg';
 import Image07 from '../../images/transactions-image-06.svg';
 import Image08 from '../../images/transactions-image-07.svg';
 import Image09 from '../../images/transactions-image-08.svg';
+import AuthService from '../../services/AuthService';
+import TransactionPanel from './TransactionPanel';
 
-function TransactionsTable02({
-  selectedItems,
-  setTransactionPanelOpen
-}) {
-
+function TransactionsTable02({ selectedItems, setTransactionPanelOpen }) {
   const transactions = [
     {
       id: '0',
@@ -103,87 +101,102 @@ function TransactionsTable02({
   const [isCheck, setIsCheck] = useState([]);
   const [list, setList] = useState([]);
 
+  const getDriversList = async () => {
+    try {
+      const result = await AuthService.getDriversList();
+      if (result.status === 200) {
+        console.log(result.data.items);
+        setList(result.data.items);
+      }
+    } catch {}
+  };
+
   useEffect(() => {
-    setList(transactions);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    getDriversList();
   }, []);
 
   const handleSelectAll = () => {
     setSelectAll(!selectAll);
-    setIsCheck(list.map(li => li.id));
+    setIsCheck(list.map((li) => li.id));
     if (selectAll) {
       setIsCheck([]);
     }
   };
 
-  const handleClick = e => {
+  const handleClick = (e) => {
     const { id, checked } = e.target;
     setSelectAll(false);
     setIsCheck([...isCheck, id]);
     if (!checked) {
-      setIsCheck(isCheck.filter(item => item !== id));
+      setIsCheck(isCheck.filter((item) => item !== id));
     }
   };
 
   useEffect(() => {
     selectedItems(isCheck);
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isCheck]);
 
   return (
-    <div className="bg-white">
-      <div>
-        {/* Table */}
-        <div className="overflow-x-auto">
-          <table className="table-auto w-full">
-            {/* Table header */}
-            <thead className="text-xs font-semibold uppercase text-slate-500 border-t border-b border-slate-200">
-              <tr>
-                <th className="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
-                  <div className="flex items-center">
-                    <label className="inline-flex">
-                      <span className="sr-only">Select all</span>
-                      <input className="form-checkbox" type="checkbox" checked={selectAll} onChange={handleSelectAll} />
-                    </label>
-                  </div>
-                </th>
-                <th className="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                  <div className="font-semibold text-left">Counterparty</div>
-                </th>
-                <th className="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                  <div className="font-semibold text-left">Payment Date</div>
-                </th>
-                <th className="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                  <div className="font-semibold text-left">Status</div>
-                </th>
-                <th className="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-                  <div className="font-semibold text-right">Amount</div>
-                </th>
-              </tr>
-            </thead>
-            {/* Table body */}
-            <tbody className="text-sm divide-y divide-slate-200 border-b border-slate-200">
-              {list.map((transaction) => {
-                return (
-                  <TransactionItem
-                    key={transaction.id}
-                    id={transaction.id}
-                    image={transaction.image}
-                    name={transaction.name}
-                    date={transaction.date}
-                    status={transaction.status}
-                    amount={transaction.amount}
-                    handleClick={handleClick}
-                    isChecked={isCheck.includes(transaction.id)}
-                    setTransactionPanelOpen={setTransactionPanelOpen}
-                  />
-                );
-              })}
-            </tbody>
-          </table>
+    <>
+      <div className='bg-white'>
+        <div>
+          {/* Table */}
+          <div className='overflow-x-auto'>
+            <table className='w-full table-auto'>
+              {/* Table header */}
+              <thead className='text-xs font-semibold uppercase border-t border-b text-slate-500 border-slate-200'>
+                <tr>
+                  <th className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
+                    <div className='font-semibold text-left'>Tên tài xế</div>
+                  </th>
+                  <th className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
+                    <div className='font-semibold text-left'>Số điện thoại</div>
+                  </th>
+                  <th className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
+                    <div className='font-semibold text-left'>Trang thái</div>
+                  </th>
+
+                  <th className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
+                    <div className='font-semibold text-right'>
+                      Thời gian đăng ký
+                    </div>
+                  </th>
+                  <th className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
+                    <div className='font-semibold text-left'>Xác thực</div>
+                  </th>
+                </tr>
+              </thead>
+              {/* Table body */}
+              <tbody className='text-sm border-b divide-y divide-slate-200 border-slate-200'>
+                {list.map((transaction) => {
+                  return (
+                    <TransactionItem
+                      id={transaction.id}
+                      name={transaction.name}
+                      gender={transaction.gender}
+                      birthday={transaction.birth}
+                      avatarUrl={transaction.avatarUrl}
+                      phone={transaction.phone}
+                      isverify={transaction.isverify}
+                      createTime={transaction.createTime}
+                      updatedTime={transaction.updatedTime}
+                      disabledReason={transaction.disabledReason}
+                      car={transaction.car}
+                      // date={transaction.date}
+                      // status={transaction.status}
+                      // amount={transaction.amount}
+                      // handleClick={handleClick}
+                      // isChecked={isCheck.includes(transaction.id)}
+                      // setTransactionPanelOpen={setTransactionPanelOpen}
+                    />
+                  );
+                })}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

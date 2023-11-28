@@ -1,57 +1,345 @@
-import React from 'react';
+import React, { useState } from 'react';
+import ModalBasic from '../../components/ModalBasic';
+import ModalBlank from '../../components/ModalBlank';
+import AuthService from '../../services/AuthService';
 
 function TransactionsTableItem(props) {
+  var today = new Date();
+  var dd = String(today.getDate()).padStart(2, '0');
+  var mm = String(today.getMonth() + 1).padStart(2, '0');
+  var yyyy = today.getFullYear();
 
-  const statusColor = (status) => {
-    switch (status) {
-      case 'Completed':
-        return 'bg-emerald-100 text-emerald-600';
-      case 'Canceled':
-        return 'bg-rose-100 text-rose-500';
-      default:
-        return 'bg-slate-100 text-slate-500';
-    }
+  today = yyyy + '-' + mm + '-' + dd;
+
+  const [feedbackModalOpen, setFeedbackModalOpen] = useState(false);
+  const [verifyModalOpen, setVerifyModalOpen] = useState(false);
+  const [verifyId, setVerifyId] = useState(null);
+  const [verifyTo, setVerifyTo] = useState(null);
+  const [verifiedToValidation, setVerifiedToValidation] = useState(null);
+
+  const verifyDriver = async () => {
+    try {
+      const payload = {
+        id: verifyId,
+        verifiedTo: verifyTo,
+      };
+      const result = await AuthService.verifyDriver(payload);
+      if (result.status === 200) {
+        console.log(result.data.items);
+        setList(result.data.items);
+      }
+    } catch {}
   };
 
-  const amountColor = (amount) => {
-    switch (amount.charAt(0)) {
-      case '+':
-        return 'text-emerald-500';
-      default:
-        return 'text-slate-700';
+  const fetchDriverDetail = async () => {
+    try {
+      const result = await AuthService.getDriverDocument(props.id);
+      console.log(result.data);
+      // if (result.status === 200) {
+      //   console.log(result.data.items);
+      //   setList(result.data.items);
+      // }
+    } catch {}
+  };
+
+  const handleVerify = () => {
+    if (!verifyTo) {
+      setVerifiedToValidation('Vui lòng chọn ngày hết hạn xác thực');
+      return;
     }
+    verifyDriver();
+    setVerifyModalOpen(false);
+  };
+
+  const handleShowDetail = () => {
+    setFeedbackModalOpen(true);
+    fetchDriverDetail();
   };
 
   return (
-    <tr className="cursor-pointer" onClick={(e) => { e.stopPropagation(); props.setTransactionPanelOpen(true); }}>
-      <td className="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
-        <div className="flex items-center">
-          <label className="inline-flex">
-            <span className="sr-only">Select</span>
-            <input id={props.id} className="form-checkbox" type="checkbox" onChange={props.handleClick} checked={props.isChecked}  onClick={(e) => e.stopPropagation()} />
-          </label>
-        </div>
-      </td>
-      <td className="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap md:w-1/2">
-        <div className="flex items-center">
-          <div className="w-9 h-9 shrink-0 mr-2 sm:mr-3">
-            <img className="rounded-full" src={props.image} width="36" height="36" alt={props.name} />
+    <>
+      <tr className='cursor-pointer'>
+        <td
+          className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap md:w-1/2'
+          onClick={(e) => {
+            e.stopPropagation();
+            // props.setTransactionPanelOpen(true);
+            // setFeedbackModalOpen(true);
+            handleShowDetail();
+          }}
+        >
+          <div className='flex items-center'>
+            <div className='mr-2 w-9 h-9 shrink-0 sm:mr-3'>
+              <img
+                className='bg-contain rounded-full'
+                src={props.avatarUrl}
+                alt={props.name}
+                style={{ height: '36px', width: '36px' }}
+              />
+            </div>
+            <div className='font-medium text-slate-800'>{props.name}</div>
           </div>
-          <div className="font-medium text-slate-800">{props.name}</div>
+        </td>
+        <td className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
+          <div className='text-left'>{props.phone}</div>
+        </td>
+        <td className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
+          <div className='text-left'>
+            <div
+              className={`text-xs inline-flex font-medium rounded-full text-center px-2.5 py-1 ${
+                props.isverify
+                  ? 'bg-emerald-100 text-emerald-600'
+                  : 'bg-rose-100 text-rose-500'
+              } `}
+            >
+              {props.isverify ? 'Đã xác thực' : 'Chưa xác thực'}
+            </div>
+          </div>
+        </td>
+        <td className='w-px px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
+          <div className={`text-right font-medium`}>
+            {props.createTime.substring(0, 10) +
+              ' ' +
+              props.createTime.substring(11, 19)}
+          </div>
+        </td>
+
+        <td className='w-px px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
+          <button
+            disabled={props.isverify}
+            className={`text-indigo-500 btn border-slate-200 hover:border-slate-300`}
+            onClick={(e) => {
+              e.stopPropagation();
+              setVerifyModalOpen(true);
+              setVerifyId(props.id);
+            }}
+          >
+            XÁC THỰC
+          </button>
+        </td>
+      </tr>
+      <ModalBasic
+        modalOpen={feedbackModalOpen}
+        setModalOpen={setFeedbackModalOpen}
+        title='Thông tin tài xế chi tiết'
+      >
+        <div className='px-5 py-4'>
+          <div className='space-y-3'>
+            <div>
+              <label className='block mb-1 text-sm font-medium' htmlFor='name'>
+                Tên tài xế
+              </label>
+              <input
+                id='name'
+                value={props.name}
+                disabled
+                className='w-full px-2 py-1 form-input'
+                type='text'
+                required
+              />
+            </div>
+            <div>
+              <label className='block mb-1 text-sm font-medium' htmlFor='name'>
+                Giới tính
+              </label>
+              <div
+                className={`text-xs inline-flex font-medium rounded-full text-center px-2.5 py-1 ${
+                  props.gender === 1
+                    ? 'bg-emerald-100 text-emerald-600'
+                    : 'bg-amber-100 text-amber-500'
+                } `}
+              >
+                {props.gender === 1 ? 'Nam' : 'Nữ'}
+              </div>
+            </div>
+            <div>
+              <label className='block mb-1 text-sm font-medium' htmlFor='name'>
+                Ngày tháng năm sinh
+              </label>
+              <input
+                value={props.createTime.substring(0, 10)}
+                disabled
+                className='w-full px-2 py-1 form-input'
+                required
+              />
+            </div>
+            <div>
+              <label className='block mb-1 text-sm font-medium' htmlFor='email'>
+                Số điện thoại
+              </label>
+              <input
+                value={props.phone}
+                disabled
+                className='w-full px-2 py-1 form-input'
+                required
+              />
+            </div>
+            <div>
+              <label
+                className='block mb-1 text-sm font-medium'
+                htmlFor='feedback'
+              >
+                Trạng thái
+              </label>
+              <div
+                className={`text-xs inline-flex font-medium rounded-full text-center px-2.5 py-1 ${
+                  props.isverify
+                    ? 'bg-emerald-100 text-emerald-600'
+                    : 'bg-rose-100 text-rose-500'
+                } `}
+              >
+                {props.isverify ? 'Đã xác thực' : 'Chưa xác thực'}
+              </div>
+            </div>
+            <div>
+              <label className='block mb-1 text-sm font-medium' htmlFor='email'>
+                Thời gian đăng ký
+              </label>
+              <input
+                value={
+                  props.createTime.substring(0, 10) +
+                  ' ' +
+                  props.createTime.substring(11, 19)
+                }
+                disabled
+                className='w-full px-2 py-1 form-input'
+                required
+              />
+            </div>
+            <div>
+              <label className='block mb-1 text-sm font-medium' htmlFor='email'>
+                Thời gian cập nhật gần nhất
+              </label>
+              <input
+                value={
+                  props.updatedTime.substring(0, 10) +
+                  ' ' +
+                  props.updatedTime.substring(11, 19)
+                }
+                disabled
+                className='w-full px-2 py-1 form-input'
+                required
+              />
+            </div>
+            {props.disabledReason && (
+              <div>
+                <label
+                  className='block mb-1 text-sm font-medium'
+                  htmlFor='email'
+                >
+                  Lý do bị khóa
+                </label>
+                <textarea
+                  value={props.disabledReason}
+                  disabled
+                  className='w-full px-2 py-1 form-input'
+                  required
+                />
+              </div>
+            )}
+            <div>
+              <label className='block mb-1 text-sm font-medium' htmlFor='email'>
+                Biển số xe
+              </label>
+              <input
+                value={props.car.licensePlate}
+                disabled
+                className='w-full px-2 py-1 form-input'
+                required
+              />
+            </div>
+            <div>
+              <label className='block mb-1 text-sm font-medium' htmlFor='email'>
+                Hãng xe
+              </label>
+              <input
+                value={props.car.make}
+                disabled
+                className='w-full px-2 py-1 form-input'
+                required
+              />
+            </div>
+            <div>
+              <label className='block mb-1 text-sm font-medium' htmlFor='email'>
+                Dòng xe
+              </label>
+              <input
+                value={props.car.model}
+                disabled
+                className='w-full px-2 py-1 form-input'
+                required
+              />
+            </div>
+          </div>
         </div>
-      </td>
-      <td className="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-        <div className="text-left">{props.date}</div>
-      </td>
-      <td className="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap">
-        <div className="text-left">
-          <div className={`text-xs inline-flex font-medium rounded-full text-center px-2.5 py-1 ${statusColor(props.status)}`}>{props.status}</div>
+
+        <div className='px-5 py-4 border-t border-slate-200'>
+          <div className='flex flex-wrap justify-end space-x-2'>
+            <button
+              className='btn-sm border-slate-200 hover:border-slate-300 text-slate-600'
+              onClick={(e) => {
+                e.stopPropagation();
+                setFeedbackModalOpen(false);
+              }}
+            >
+              Đóng
+            </button>
+          </div>
         </div>
-      </td>
-      <td className="px-2 first:pl-5 last:pr-5 py-3 whitespace-nowrap w-px">
-        <div className={`text-right font-medium ${amountColor(props.amount)}`}>{props.amount}</div>
-      </td>
-    </tr>
+      </ModalBasic>
+
+      <ModalBasic
+        modalOpen={verifyModalOpen}
+        setModalOpen={setVerifyModalOpen}
+        title='Xác thực tài xế'
+      >
+        <div className='px-5 py-4'>
+          <div className='space-y-3'>
+            <div className='font-bold'>
+              Bạn có chắc chắn muốn xác thực tài khoản này? Nếu có vui lòng chọn
+              ngày hết hạn xác thực bên dưới.
+            </div>
+            <div>
+              <label className='block mb-1 text-sm font-medium' htmlFor='name'>
+                Ngày hết hạn xác thực
+              </label>
+              <input
+                type='date'
+                value={verifyTo}
+                onChange={(e) => {
+                  setVerifyTo(e.target.value);
+                  setVerifiedToValidation(null);
+                }}
+                className='w-full px-2 py-1 form-input'
+                min={today}
+                required
+              />
+            </div>
+          </div>
+          <p className='mt-2 text-red-500 ml'>{verifiedToValidation}</p>
+        </div>
+
+        <div className='px-5 py-4 border-t border-slate-200'>
+          <div className='flex flex-wrap justify-end space-x-2'>
+            <button
+              className='btn-sm border-slate-200 hover:border-slate-300 text-slate-600'
+              onClick={(e) => {
+                e.stopPropagation();
+                setVerifyModalOpen(false);
+              }}
+            >
+              Huỷ
+            </button>
+            <button
+              className='text-white bg-indigo-500 btn-sm hover:bg-indigo-600'
+              onClick={handleVerify}
+            >
+              Xác thực
+            </button>
+          </div>
+        </div>
+      </ModalBasic>
+    </>
   );
 }
 
