@@ -7,7 +7,7 @@ const getLocalToken = () => {
   const accessTokenCookie = cookies.find((cookie) =>
     cookie.startsWith('access_token=')
   );
-  const accessToken = accessTokenCookie.substring('access_token='.length);
+  const accessToken = accessTokenCookie?.substring('access_token='.length);
   return accessToken;
 };
 

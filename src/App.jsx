@@ -94,82 +94,519 @@ function App() {
             </AdminRoute>
           }
         />
+
         <Route
-          path='/orders'
+          path='/ecommerce/customers'
           element={
             <AdminRoute>
-              <>hihi</>
+              <Customers />
             </AdminRoute>
           }
         />
-
-        <Route path='/ecommerce/customers' element={<Customers />} />
-        <Route path='/dashboard/analytics' element={<Analytics />} />
-        <Route path='/dashboard/fintech' element={<Fintech />} />
-        <Route path='/ecommerce/orders' element={<Orders />} />
-        <Route path='/ecommerce/invoices' element={<Invoices />} />
-        <Route path='/ecommerce/shop' element={<Shop />} />
-        <Route path='/ecommerce/shop-2' element={<Shop2 />} />
-        <Route path='/ecommerce/product' element={<Product />} />
-        <Route path='/ecommerce/cart' element={<Cart />} />
-        <Route path='/ecommerce/cart-2' element={<Cart2 />} />
-        <Route path='/ecommerce/cart-3' element={<Cart3 />} />
-        <Route path='/ecommerce/pay' element={<Pay />} />
-        <Route path='/campaigns' element={<Campaigns />} />
-        <Route path='/community/users-tabs' element={<UsersTabs />} />
-        <Route path='/community/users-tiles' element={<UsersTiles />} />
-        <Route path='/community/profile' element={<Profile />} />
-        <Route path='/community/feed' element={<Feed />} />
-        <Route path='/community/forum' element={<Forum />} />
-        <Route path='/community/forum-post' element={<ForumPost />} />
-        <Route path='/community/meetups' element={<Meetups />} />
-        <Route path='/community/meetups-post' element={<MeetupsPost />} />
-        <Route path='/finance/cards' element={<CreditCards />} />
-        <Route path='/finance/transactions' element={<Transactions />} />
+        <Route
+          path='/dashboard/analytics'
+          element={
+            <AdminRoute>
+              <Analytics />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/dashboard/fintech'
+          element={
+            <AdminRoute>
+              <Fintech />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/ecommerce/orders'
+          element={
+            <AdminRoute>
+              <Orders />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/ecommerce/invoices'
+          element={
+            <AdminRoute>
+              <Invoices />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/ecommerce/shop'
+          element={
+            <AdminRoute>
+              <Shop />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/ecommerce/shop-2'
+          element={
+            <AdminRoute>
+              <Shop2 />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/ecommerce/product'
+          element={
+            <AdminRoute>
+              <Product />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/ecommerce/cart'
+          element={
+            <AdminRoute>
+              <Cart />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/ecommerce/cart-2'
+          element={
+            <AdminRoute>
+              <Cart2 />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/ecommerce/cart-3'
+          element={
+            <AdminRoute>
+              <Cart3 />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/ecommerce/pay'
+          element={
+            <AdminRoute>
+              <Pay />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/campaigns'
+          element={
+            <AdminRoute>
+              <Campaigns />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/community/users-tabs'
+          element={
+            <AdminRoute>
+              <UsersTabs />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/community/users-tiles'
+          element={
+            <AdminRoute>
+              <UsersTiles />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/community/profile'
+          element={
+            <AdminRoute>
+              <Profile />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/community/feed'
+          element={
+            <AdminRoute>
+              <Feed />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/community/forum'
+          element={
+            <AdminRoute>
+              <Forum />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/community/forum-post'
+          element={
+            <AdminRoute>
+              <ForumPost />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/community/meetups'
+          element={
+            <AdminRoute>
+              <Meetups />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/community/meetups-post'
+          element={
+            <AdminRoute>
+              <MeetupsPost />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/finance/cards'
+          element={
+            <AdminRoute>
+              <CreditCards />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/finance/transactions'
+          element={
+            <AdminRoute>
+              <Transactions />
+            </AdminRoute>
+          }
+        />
         <Route
           path='/finance/transaction-details'
-          element={<TransactionDetails />}
+          element={
+            <AdminRoute>
+              <TransactionDetails />
+            </AdminRoute>
+          }
         />
-        <Route path='/job/job-listing' element={<JobListing />} />
-        <Route path='/job/job-post' element={<JobPost />} />
-        <Route path='/job/company-profile' element={<CompanyProfile />} />
-        <Route path='/messages' element={<Messages />} />
-        <Route path='/tasks/kanban' element={<TasksKanban />} />
-        <Route path='/tasks/list' element={<TasksList />} />
-        <Route path='/inbox' element={<Inbox />} />
-        <Route path='/calendar' element={<Calendar />} />
-        <Route path='/settings/account' element={<Account />} />
-        <Route path='/settings/notifications' element={<Notifications />} />
-        <Route path='/settings/apps' element={<Apps />} />
-        <Route path='/settings/plans' element={<Plans />} />
-        <Route path='/settings/billing' element={<Billing />} />
-        <Route path='/settings/feedback' element={<Feedback />} />
-        <Route path='/utility/changelog' element={<Changelog />} />
-        <Route path='/utility/roadmap' element={<Roadmap />} />
-        <Route path='/utility/faqs' element={<Faqs />} />
-        <Route path='/utility/empty-state' element={<EmptyState />} />
-        <Route path='/utility/404' element={<PageNotFound />} />
-        <Route path='/utility/knowledge-base' element={<KnowledgeBase />} />
-        <Route path='/signup' element={<Signup />} />
-        <Route path='/reset-password' element={<ResetPassword />} />
-        <Route path='/onboarding-01' element={<Onboarding01 />} />
-        <Route path='/onboarding-02' element={<Onboarding02 />} />
-        <Route path='/onboarding-03' element={<Onboarding03 />} />
-        <Route path='/onboarding-04' element={<Onboarding04 />} />
-        <Route path='/component/button' element={<ButtonPage />} />
-        <Route path='/component/form' element={<FormPage />} />
-        <Route path='/component/dropdown' element={<DropdownPage />} />
-        <Route path='/component/alert' element={<AlertPage />} />
-        <Route path='/component/modal' element={<ModalPage />} />
-        <Route path='/component/pagination' element={<PaginationPage />} />
-        <Route path='/component/tabs' element={<TabsPage />} />
-        <Route path='/component/breadcrumb' element={<BreadcrumbPage />} />
-        <Route path='/component/badge' element={<BadgePage />} />
-        <Route path='/component/avatar' element={<AvatarPage />} />
-        <Route path='/component/tooltip' element={<TooltipPage />} />
-        <Route path='/component/accordion' element={<AccordionPage />} />
-        <Route path='/component/icons' element={<IconsPage />} />
-        <Route path='*' element={<PageNotFound />} />
+        <Route
+          path='/job/job-listing'
+          element={
+            <AdminRoute>
+              <JobListing />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/job/job-post'
+          element={
+            <AdminRoute>
+              <JobPost />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/job/company-profile'
+          element={
+            <AdminRoute>
+              <CompanyProfile />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/messages'
+          element={
+            <AdminRoute>
+              <Messages />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/tasks/kanban'
+          element={
+            <AdminRoute>
+              <TasksKanban />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/tasks/list'
+          element={
+            <AdminRoute>
+              <TasksList />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/inbox'
+          element={
+            <AdminRoute>
+              <Inbox />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/calendar'
+          element={
+            <AdminRoute>
+              <Calendar />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/settings/account'
+          element={
+            <AdminRoute>
+              <Account />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/settings/notifications'
+          element={
+            <AdminRoute>
+              <Notifications />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/settings/apps'
+          element={
+            <AdminRoute>
+              <Apps />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/settings/plans'
+          element={
+            <AdminRoute>
+              <Plans />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/settings/billing'
+          element={
+            <AdminRoute>
+              <Billing />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/settings/feedback'
+          element={
+            <AdminRoute>
+              <Feedback />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/utility/changelog'
+          element={
+            <AdminRoute>
+              <Changelog />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/utility/roadmap'
+          element={
+            <AdminRoute>
+              <Roadmap />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/utility/faqs'
+          element={
+            <AdminRoute>
+              <Faqs />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/utility/empty-state'
+          element={
+            <AdminRoute>
+              <EmptyState />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/utility/404'
+          element={
+            <AdminRoute>
+              <PageNotFound />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/utility/knowledge-base'
+          element={
+            <AdminRoute>
+              <KnowledgeBase />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/signup'
+          element={
+            <AdminRoute>
+              <Signup />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/reset-password'
+          element={
+            <AdminRoute>
+              <ResetPassword />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/onboarding-01'
+          element={
+            <AdminRoute>
+              <Onboarding01 />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/onboarding-02'
+          element={
+            <AdminRoute>
+              <Onboarding02 />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/onboarding-03'
+          element={
+            <AdminRoute>
+              <Onboarding03 />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/onboarding-04'
+          element={
+            <AdminRoute>
+              <Onboarding04 />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/component/button'
+          element={
+            <AdminRoute>
+              <ButtonPage />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/component/form'
+          element={
+            <AdminRoute>
+              <FormPage />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/component/dropdown'
+          element={
+            <AdminRoute>
+              <DropdownPage />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/component/alert'
+          element={
+            <AdminRoute>
+              <AlertPage />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/component/modal'
+          element={
+            <AdminRoute>
+              <ModalPage />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/component/pagination'
+          element={
+            <AdminRoute>
+              <PaginationPage />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/component/tabs'
+          element={
+            <AdminRoute>
+              <TabsPage />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/component/breadcrumb'
+          element={
+            <AdminRoute>
+              <BreadcrumbPage />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/component/badge'
+          element={
+            <AdminRoute>
+              <BadgePage />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/component/avatar'
+          element={
+            <AdminRoute>
+              <AvatarPage />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/component/tooltip'
+          element={
+            <AdminRoute>
+              <TooltipPage />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/component/accordion'
+          element={
+            <AdminRoute>
+              <AccordionPage />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='/component/icons'
+          element={
+            <AdminRoute>
+              <IconsPage />
+            </AdminRoute>
+          }
+        />
+        <Route
+          path='*'
+          element={
+            <AdminRoute>
+              <PageNotFound />
+            </AdminRoute>
+          }
+        />
       </Routes>
     </>
   );

@@ -106,7 +106,7 @@ function TransactionsTableItem(props) {
 
         <td className='w-px px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
           <button
-            disabled={props.isverify}
+            // disabled={props.isverify}
             className={`text-indigo-500 btn border-slate-200 hover:border-slate-300`}
             onClick={(e) => {
               e.stopPropagation();
