@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-import AuthImage from '../../public/assets/images/wallpaper.png';
+import AuthImage from '../images/wallpaper.png';
 import AuthService from '../services/AuthService';
 
 function Signin() {
