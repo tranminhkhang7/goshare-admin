@@ -27,14 +27,18 @@ function TransactionsTableItem(props) {
       if (result.status === 200) {
         console.log(result.data.items);
         setList(result.data.items);
+        Navigate('/drivers');
       }
     } catch {}
   };
+
+  const [document, setDocument] = useState(null);
 
   const fetchDriverDetail = async () => {
     try {
       const result = await AuthService.getDriverDocument(props.id);
       console.log(result.data);
+      setDocument(result.data);
       // if (result.status === 200) {
       //   console.log(result.data.items);
       //   setList(result.data.items);
@@ -87,12 +91,12 @@ function TransactionsTableItem(props) {
           <div className='text-left'>
             <div
               className={`text-xs inline-flex font-medium rounded-full text-center px-2.5 py-1 ${
-                props.isverify
+                props.verifyTo > today
                   ? 'bg-emerald-100 text-emerald-600'
                   : 'bg-rose-100 text-rose-500'
               } `}
             >
-              {props.isverify ? 'Đã xác thực' : 'Chưa xác thực'}
+              {props.verifyTo > today ? 'Đã xác thực' : 'Chưa xác thực'}
             </div>
           </div>
         </td>
@@ -105,17 +109,19 @@ function TransactionsTableItem(props) {
         </td>
 
         <td className='w-px px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
-          <button
-            // disabled={props.isverify}
-            className={`text-indigo-500 btn border-slate-200 hover:border-slate-300`}
-            onClick={(e) => {
-              e.stopPropagation();
-              setVerifyModalOpen(true);
-              setVerifyId(props.id);
-            }}
-          >
-            XÁC THỰC
-          </button>
+          {props.verifyTo <= today && (
+            <button
+              // disabled={props.verifyTo > today}
+              className={`text-indigo-500 btn border-slate-200 hover:border-slate-300`}
+              onClick={(e) => {
+                e.stopPropagation();
+                setVerifyModalOpen(true);
+                setVerifyId(props.id);
+              }}
+            >
+              XÁC THỰC
+            </button>
+          )}
         </td>
       </tr>
       <ModalBasic
@@ -270,6 +276,30 @@ function TransactionsTableItem(props) {
                 required
               />
             </div>
+            <div>
+              <label className='block mb-1 text-sm font-medium' htmlFor='email'>
+                Còn hạn đến ngày
+              </label>
+              <input
+                value={props.verifyTo}
+                disabled
+                className='w-full px-2 py-1 form-input'
+                required
+              />
+            </div>
+            {document && (
+              <div>
+                <label
+                  className='block mb-1 text-sm font-medium'
+                  htmlFor='email'
+                >
+                  Giấy phép
+                </label>
+                {document.map((doc) => (
+                  <img key={doc.id} src={doc.url} alt={`Document ${doc.id}`} />
+                ))}
+              </div>
+            )}
           </div>
         </div>
 

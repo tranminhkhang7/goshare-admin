@@ -86,6 +86,16 @@ function App() {
     <>
       <Routes>
         <Route path='/signin' element={<Signin />} />
+
+        <Route
+          path='/'
+          element={
+            <AdminRoute>
+              <TransactionDetails />
+            </AdminRoute>
+          }
+        />
+
         <Route
           path='/drivers'
           element={

@@ -182,6 +182,7 @@ function TransactionsTable02({ selectedItems, setTransactionPanelOpen }) {
                       updatedTime={transaction.updatedTime}
                       disabledReason={transaction.disabledReason}
                       car={transaction.car}
+                      verifyTo={transaction.verifyTo}
                       // date={transaction.date}
                       // status={transaction.status}
                       // amount={transaction.amount}
