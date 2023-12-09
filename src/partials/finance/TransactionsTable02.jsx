@@ -153,7 +153,7 @@ function TransactionsTable02({ selectedItems, setTransactionPanelOpen }) {
                     <div className='font-semibold text-left'>Số điện thoại</div>
                   </th>
                   <th className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
-                    <div className='font-semibold text-left'>Trạng thái</div>
+                    <div className='font-semibold text-left'>Trang thái</div>
                   </th>
 
                   <th className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
