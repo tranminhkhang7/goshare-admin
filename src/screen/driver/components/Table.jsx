@@ -12,90 +12,7 @@ import Image09 from '../../../images/transactions-image-08.svg';
 import AuthService from '../../../services/AuthService';
 import TableItem from './TableItem';
 
-function Table({ selectedItems, setTransactionPanelOpen }) {
-  const transactions = [
-    {
-      id: '0',
-      image: Image01,
-      name: 'Form Builder CP',
-      date: '22/01/2022',
-      status: 'Pending',
-      amount: '-$1,299.22',
-    },
-    {
-      id: '1',
-      image: Image02,
-      name: 'Imperial Hotel ****',
-      date: '22/01/2022',
-      status: 'Completed',
-      amount: '-$1,029.77',
-    },
-    {
-      id: '2',
-      image: Image03,
-      name: 'Aprilynne Pills',
-      date: '22/01/2022',
-      status: 'Pending',
-      amount: '+$499.99',
-    },
-    {
-      id: '3',
-      image: Image04,
-      name: 'Google Limited UK',
-      date: '22/01/2022',
-      status: 'Completed',
-      amount: '-$1,029.77',
-    },
-    {
-      id: '4',
-      image: Image05,
-      name: 'Acme LTD UK',
-      date: '22/01/2022',
-      status: 'Pending',
-      amount: '+$2,179.36',
-    },
-    {
-      id: '5',
-      image: Image04,
-      name: 'Google Limited UK',
-      date: '22/01/2022',
-      status: 'Canceled',
-      amount: '-$1,029.77',
-    },
-    {
-      id: '6',
-      image: Image06,
-      name: 'Uber',
-      date: '22/01/2022',
-      status: 'Completed',
-      amount: '-$272.88',
-    },
-    {
-      id: '7',
-      image: Image07,
-      name: 'PublicOne Inc.',
-      date: '22/01/2022',
-      status: 'Completed',
-      amount: '-$199.87',
-    },
-    {
-      id: '8',
-      image: Image08,
-      name: 'Github Inc.',
-      date: '22/01/2022',
-      status: 'Completed',
-      amount: '-$42.87',
-    },
-    {
-      id: '9',
-      image: Image09,
-      name: 'Form Builder PRO',
-      date: '22/01/2022',
-      status: 'Completed',
-      amount: '-$112.44',
-    },
-  ];
-
+function Table({ selectedItems, setTransactionPanelOpen, searchText }) {
   const [selectAll, setSelectAll] = useState(false);
   const [isCheck, setIsCheck] = useState([]);
   const [list, setList] = useState([]);
@@ -110,9 +27,30 @@ function Table({ selectedItems, setTransactionPanelOpen }) {
     } catch {}
   };
 
+  const [filteredList, setFilteredList] = useState([]);
   useEffect(() => {
     getDriversList();
   }, []);
+
+  useEffect(() => {
+    if (searchText === null || searchText.length === 0) {
+      setFilteredList(list);
+    }
+    setFilteredList(
+      list.filter((item) => {
+        const lowerSearchText = searchText.toLowerCase();
+        const lowerName = item.name.toLowerCase();
+        const lowerPhone = item.phone.toLowerCase();
+        const lowerId = item.id.toLowerCase();
+
+        return (
+          lowerName.includes(lowerSearchText) ||
+          lowerPhone.includes(lowerSearchText) ||
+          lowerId.includes(lowerSearchText)
+        );
+      })
+    );
+  }, [searchText, list]);
 
   const handleSelectAll = () => {
     setSelectAll(!selectAll);
@@ -167,7 +105,7 @@ function Table({ selectedItems, setTransactionPanelOpen }) {
               </thead>
               {/* Table body */}
               <tbody className='text-sm border-b divide-y divide-slate-200 border-slate-200'>
-                {list.map((transaction) => {
+                {filteredList.map((transaction) => {
                   return (
                     <TableItem
                       id={transaction.id}

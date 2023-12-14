@@ -73,6 +73,7 @@ import IconsPage from './pages/component/IconsPage';
 import AdminRoute from './routes/AdminRoute';
 import DriverList from './screen/driver/DriverList';
 import TripList from './screen/trip/TripList';
+import UserList from './screen/all-user/UserList';
 
 function App() {
   const location = useLocation();
@@ -114,6 +115,17 @@ function App() {
             </AdminRoute>
           }
         />
+
+        <Route
+          path='/users'
+          element={
+            <AdminRoute>
+              <UserList />
+            </AdminRoute>
+          }
+        />
+
+        {/* STOP HERE */}
 
         <Route
           path='/ecommerce/customers'

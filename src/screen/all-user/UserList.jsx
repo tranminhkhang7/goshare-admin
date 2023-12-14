@@ -6,7 +6,7 @@ import Table from './components/Table';
 import Sidebar from '../../partials/Sidebar';
 // import Sidebar from '../../partials/SidebarOriginal';
 
-function DriverList() {
+function UserList() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
   const [transactionPanelOpen, setTransactionPanelOpen] = useState(true);
@@ -14,8 +14,6 @@ function DriverList() {
   const handleSelectedItems = (selectedItems) => {
     setSelectedItems([...selectedItems]);
   };
-
-  const [searchText, setSearchText] = useState('');
 
   return (
     <div className='flex h-screen overflow-hidden'>
@@ -36,7 +34,7 @@ function DriverList() {
                 {/* Left: Title */}
                 <div className='mb-4'>
                   <h1 className='text-2xl font-bold md:text-3xl text-slate-800'>
-                    Duyệt hồ sơ tài xế 👨‍💼
+                    Quản lý người dùng 🧔‍♂️
                   </h1>
                 </div>
 
@@ -44,11 +42,7 @@ function DriverList() {
                 <div className='grid justify-start grid-flow-col gap-2 sm:auto-cols-max sm:justify-end'>
                   {/* Search form */}
                   <div className='hidden sm:block'>
-                    <SearchForm
-                      onSearchChange={(value) => {
-                        setSearchText(value);
-                      }}
-                    />
+                    <SearchForm />
                   </div>
                 </div>
               </div>
@@ -57,7 +51,6 @@ function DriverList() {
               <Table
                 selectedItems={handleSelectedItems}
                 setTransactionPanelOpen={setTransactionPanelOpen}
-                searchText={searchText}
               />
             </div>
 
@@ -72,4 +65,4 @@ function DriverList() {
   );
 }
 
-export default DriverList;
+export default UserList;

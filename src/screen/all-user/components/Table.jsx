@@ -95,12 +95,7 @@ function Table({ selectedItems }) {
               {/* Table body */}
               <tbody className='text-sm border-b divide-y divide-slate-200 border-slate-200'>
                 {list.map((trip) => {
-                  return (
-                    <TableItem
-                      key={trip.id}
-                      {...trip}            
-                    />
-                  );
+                  return <TableItem key={trip.id} {...trip} />;
                 })}
               </tbody>
             </table>
