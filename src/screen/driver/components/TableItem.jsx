@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import ModalBasic from '../../../components/ModalBasic';
 import AuthService from '../../../services/AuthService';
+import { formatPhoneNumber } from '../../../utils/Utils';
 
 function TableItem(props) {
   var today = new Date();
@@ -15,8 +16,6 @@ function TableItem(props) {
   mm = String(fiveDaysFromToday.getMonth() + 1).padStart(2, '0');
   yyyy = fiveDaysFromToday.getFullYear();
   fiveDaysFromToday = yyyy + '-' + mm + '-' + dd;
-
-  console.log(fiveDaysFromToday);
 
   const [feedbackModalOpen, setFeedbackModalOpen] = useState(false);
   const [verifyModalOpen, setVerifyModalOpen] = useState(false);
@@ -95,7 +94,7 @@ function TableItem(props) {
           </div>
         </td>
         <td className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
-          <div className='text-left'>{props.phone}</div>
+          <div className='text-left'>{formatPhoneNumber(props.phone)}</div>
         </td>
         <td className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
           <div className='text-left'>
@@ -194,7 +193,7 @@ function TableItem(props) {
                 Số điện thoại
               </label>
               <input
-                value={props.phone}
+                value={formatPhoneNumber(props.phone)}
                 disabled
                 className='w-full px-2 py-1 form-input'
                 required
@@ -421,7 +420,7 @@ function TableItem(props) {
                   setVerifiedToValidation(null);
                 }}
                 className='w-full px-2 py-1 form-input'
-                min={today}
+                // min={today}
                 required
               />
             </div>

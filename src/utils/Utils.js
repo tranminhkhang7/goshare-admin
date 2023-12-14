@@ -32,3 +32,45 @@ export const formatThousands = (value) => Intl.NumberFormat('en-US', {
   maximumSignificantDigits: 3,
   notation: 'compact',
 }).format(value);
+
+export const formatPhoneNumber = (phoneNumber) => {
+  if (!phoneNumber) return null;
+  const formattedPhoneNumber = phoneNumber.replace('+84', '0');
+
+  if (formattedPhoneNumber.length === 10) {
+    return `${formattedPhoneNumber.slice(0, 4)}-${formattedPhoneNumber.slice(
+      4,
+      7
+    )}-${formattedPhoneNumber.slice(7)}`;
+  } else {
+    return phoneNumber;
+  }
+};
+
+export const formatDate = (inputDate) => {
+  const dateObject = new Date(inputDate);
+  
+  const day = dateObject.getDate().toString().padStart(2, '0');
+  const month = (dateObject.getMonth() + 1).toString().padStart(2, '0');
+  const year = dateObject.getFullYear().toString();
+
+  const formattedDate = `${day}-${month}-${year}`;
+
+  return formattedDate;
+};
+
+export const formatDateTime = (inputDate) => {
+  const dateObject = new Date(inputDate);
+  
+  const day = dateObject.getDate().toString().padStart(2, '0');
+  const month = (dateObject.getMonth() + 1).toString().padStart(2, '0');
+  const year = dateObject.getFullYear().toString();
+
+  const hours = dateObject.getHours().toString().padStart(2, '0');
+  const minutes = dateObject.getMinutes().toString().padStart(2, '0');
+  const seconds = dateObject.getSeconds().toString().padStart(2, '0');
+
+  const formattedDateTime = `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
+
+  return formattedDateTime;
+};

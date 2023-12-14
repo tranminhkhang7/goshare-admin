@@ -72,6 +72,7 @@ import AccordionPage from './pages/component/AccordionPage';
 import IconsPage from './pages/component/IconsPage';
 import AdminRoute from './routes/AdminRoute';
 import DriverList from './screen/driver/DriverList';
+import TripList from './screen/trip/TripList';
 
 function App() {
   const location = useLocation();
@@ -101,6 +102,15 @@ function App() {
           element={
             <AdminRoute>
               <DriverList />
+            </AdminRoute>
+          }
+        />
+
+        <Route
+          path='/trips'
+          element={
+            <AdminRoute>
+              <TripList />
             </AdminRoute>
           }
         />

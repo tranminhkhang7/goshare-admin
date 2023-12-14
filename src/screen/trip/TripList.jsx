@@ -6,7 +6,7 @@ import Table from './components/Table';
 import Sidebar from '../../partials/Sidebar';
 // import Sidebar from '../../partials/SidebarOriginal';
 
-function DriverList() {
+function TripList() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
   const [transactionPanelOpen, setTransactionPanelOpen] = useState(true);
@@ -34,7 +34,7 @@ function DriverList() {
                 {/* Left: Title */}
                 <div className='mb-4'>
                   <h1 className='text-2xl font-bold md:text-3xl text-slate-800'>
-                    Duyệt hồ sơ tài xế 👨‍💼
+                    Quản lý chuyến 🚕
                   </h1>
                 </div>
 
@@ -65,4 +65,4 @@ function DriverList() {
   );
 }
 
-export default DriverList;
+export default TripList;
