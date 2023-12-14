@@ -30,7 +30,6 @@ import Meetups from './pages/community/Meetups';
 import MeetupsPost from './pages/community/MeetupsPost';
 import CreditCards from './pages/finance/CreditCards';
 import Transactions from './pages/finance/Transactions';
-import TransactionDetails from './pages/finance/TransactionDetails';
 import JobListing from './pages/job/JobListing';
 import JobPost from './pages/job/JobPost';
 import CompanyProfile from './pages/job/CompanyProfile';
@@ -72,6 +71,7 @@ import TooltipPage from './pages/component/TooltipPage';
 import AccordionPage from './pages/component/AccordionPage';
 import IconsPage from './pages/component/IconsPage';
 import AdminRoute from './routes/AdminRoute';
+import DriverList from './screen/driver/DriverList';
 
 function App() {
   const location = useLocation();
@@ -91,7 +91,7 @@ function App() {
           path='/'
           element={
             <AdminRoute>
-              <TransactionDetails />
+              <DriverList />
             </AdminRoute>
           }
         />
@@ -100,7 +100,7 @@ function App() {
           path='/drivers'
           element={
             <AdminRoute>
-              <TransactionDetails />
+              <DriverList />
             </AdminRoute>
           }
         />
@@ -289,14 +289,14 @@ function App() {
             </AdminRoute>
           }
         />
-        <Route
+        {/* <Route
           path='/finance/transaction-details'
           element={
             <AdminRoute>
               <TransactionDetails />
             </AdminRoute>
           }
-        />
+        /> */}
         <Route
           path='/job/job-listing'
           element={

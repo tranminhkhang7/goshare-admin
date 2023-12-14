@@ -1,19 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import TransactionItem from './TransactionsTableItem02';
 
-import Image01 from '../../images/transactions-image-01.svg';
-import Image02 from '../../images/transactions-image-02.svg';
-import Image03 from '../../images/user-36-05.jpg';
-import Image04 from '../../images/transactions-image-03.svg';
-import Image05 from '../../images/transactions-image-04.svg';
-import Image06 from '../../images/transactions-image-05.svg';
-import Image07 from '../../images/transactions-image-06.svg';
-import Image08 from '../../images/transactions-image-07.svg';
-import Image09 from '../../images/transactions-image-08.svg';
-import AuthService from '../../services/AuthService';
-import TransactionPanel from './TransactionPanel';
+import Image01 from '../../../images/transactions-image-01.svg';
+import Image02 from '../../../images/transactions-image-02.svg';
+import Image03 from '../../../images/user-36-05.jpg';
+import Image04 from '../../../images/transactions-image-03.svg';
+import Image05 from '../../../images/transactions-image-04.svg';
+import Image06 from '../../../images/transactions-image-05.svg';
+import Image07 from '../../../images/transactions-image-06.svg';
+import Image08 from '../../../images/transactions-image-07.svg';
+import Image09 from '../../../images/transactions-image-08.svg';
+import AuthService from '../../../services/AuthService';
+import TableItem from './TableItem';
 
-function TransactionsTable02({ selectedItems, setTransactionPanelOpen }) {
+function Table({ selectedItems, setTransactionPanelOpen }) {
   const transactions = [
     {
       id: '0',
@@ -170,7 +169,7 @@ function TransactionsTable02({ selectedItems, setTransactionPanelOpen }) {
               <tbody className='text-sm border-b divide-y divide-slate-200 border-slate-200'>
                 {list.map((transaction) => {
                   return (
-                    <TransactionItem
+                    <TableItem
                       id={transaction.id}
                       name={transaction.name}
                       gender={transaction.gender}
@@ -201,4 +200,4 @@ function TransactionsTable02({ selectedItems, setTransactionPanelOpen }) {
   );
 }
 
-export default TransactionsTable02;
+export default Table;
