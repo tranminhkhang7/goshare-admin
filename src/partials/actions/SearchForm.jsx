@@ -17,7 +17,7 @@ function SearchForm({ placeholder, onSearchChange }) {
         id='action-search'
         className='form-input pl-9 focus:border-slate-300'
         type='search'
-        placeholder={placeholder}
+        placeholder={'Tìm kiếm'}
         value={searchValue}
         onChange={handleChange}
       />

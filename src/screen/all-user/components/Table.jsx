@@ -1,43 +1,64 @@
 import React, { useEffect, useState } from 'react';
 
-import Image01 from '../../../images/transactions-image-01.svg';
-import Image02 from '../../../images/transactions-image-02.svg';
-import Image03 from '../../../images/user-36-05.jpg';
-import Image04 from '../../../images/transactions-image-03.svg';
-import Image05 from '../../../images/transactions-image-04.svg';
-import Image06 from '../../../images/transactions-image-05.svg';
-import Image07 from '../../../images/transactions-image-06.svg';
-import Image08 from '../../../images/transactions-image-07.svg';
-import Image09 from '../../../images/transactions-image-08.svg';
 import AuthService from '../../../services/AuthService';
 import TableItem from './TableItem';
 
-function Table({ selectedItems }) {
+function Table({ selectedItems, setTransactionPanelOpen, searchText }) {
   const [selectAll, setSelectAll] = useState(false);
   const [isCheck, setIsCheck] = useState([]);
   const [list, setList] = useState([]);
 
   const getDriversList = async () => {
     try {
-      const result = await AuthService.getTripsList();
+      const result = await AuthService.getUsersList();
       if (result.status === 200) {
-        const sortedList = result.data.items.sort((a, b) => {
-          if (a.status === 2 && b.status !== 2) {
-            return -1;
-          } else if (a.status !== 2 && b.status === 2) {
-            return 1;
-          }
-          return new Date(a.startTime) - new Date(b.startTime);
-        });
-
-        setList(sortedList);
+        console.log(result.data.items);
+        setList(result.data.items);
       }
     } catch {}
   };
 
+  const [filteredList, setFilteredList] = useState([]);
   useEffect(() => {
     getDriversList();
   }, []);
+
+  useEffect(() => {
+    if (searchText === null || searchText.length === 0) {
+      setFilteredList(list);
+    }
+    setFilteredList(
+      list.filter((item) => {
+        const lowerSearchText = searchText.toLowerCase();
+        const lowerName = item.name.toLowerCase();
+        const lowerPhone = item.phone.toLowerCase();
+        const lowerId = item.id.toLowerCase();
+
+        return (
+          lowerName.includes(lowerSearchText) ||
+          lowerPhone.includes(lowerSearchText) ||
+          lowerId.includes(lowerSearchText)
+        );
+      })
+    );
+  }, [searchText, list]);
+
+  const handleSelectAll = () => {
+    setSelectAll(!selectAll);
+    setIsCheck(list.map((li) => li.id));
+    if (selectAll) {
+      setIsCheck([]);
+    }
+  };
+
+  const handleClick = (e) => {
+    const { id, checked } = e.target;
+    setSelectAll(false);
+    setIsCheck([...isCheck, id]);
+    if (!checked) {
+      setIsCheck(isCheck.filter((item) => item !== id));
+    }
+  };
 
   useEffect(() => {
     selectedItems(isCheck);
@@ -54,48 +75,35 @@ function Table({ selectedItems }) {
               <thead className='text-xs font-semibold uppercase border-t border-b text-slate-500 border-slate-200'>
                 <tr>
                   <th className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
-                    <div className='font-semibold text-left'>Trạng thái</div>
+                    <div className='font-semibold text-left'>Tài khoản</div>
                   </th>
                   <th className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
-                    <div className='font-semibold text-left'>Tên tài xế</div>
+                    <div className='font-semibold text-left'>Tên</div>
                   </th>
                   <th className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
-                    <div className='font-semibold text-left'>SĐT tài xế</div>
+                    <div className='font-semibold text-left'>Số điện thoại</div>
                   </th>
                   <th className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
-                    <div className='font-semibold text-left'>Tên người đặt</div>
-                  </th>
-                  <th className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
-                    <div className='font-semibold text-left'>SĐT người đặt</div>
-                  </th>
-                  <th className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
-                    <div className='font-semibold text-left'>Điểm đón</div>
-                  </th>
-                  <th className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
-                    <div className='font-semibold text-left'>Điểm trả</div>
-                  </th>
-                  <th className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
-                    <div className='font-semibold text-left'>Huỷ chuyến</div>
-                  </th>
-                  {/* stop here */}
-                  {/* <th className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
-                    <div className='font-semibold text-left'>Trạng thái</div>
-                  </th>
-
-                  <th className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
-                    <div className='font-semibold text-right'>
+                    <div className='font-semibold text-left'>
                       Thời gian đăng ký
                     </div>
                   </th>
                   <th className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
-                    <div className='font-semibold text-left'>Xác thực</div>
-                  </th> */}
+                    <div className='font-semibold text-left'>
+                     Giới tính
+                    </div>
+                  </th>
+                  <th className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
+                    <div className='font-semibold text-left'>
+                     Vô hiệu hoá
+                    </div>
+                  </th>
                 </tr>
               </thead>
               {/* Table body */}
               <tbody className='text-sm border-b divide-y divide-slate-200 border-slate-200'>
-                {list.map((trip) => {
-                  return <TableItem key={trip.id} {...trip} />;
+                {filteredList.map((user) => {
+                  return <TableItem key={user.id} {...user} />;
                 })}
               </tbody>
             </table>

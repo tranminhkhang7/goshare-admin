@@ -1,14 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-import Image01 from '../../../images/transactions-image-01.svg';
-import Image02 from '../../../images/transactions-image-02.svg';
-import Image03 from '../../../images/user-36-05.jpg';
-import Image04 from '../../../images/transactions-image-03.svg';
-import Image05 from '../../../images/transactions-image-04.svg';
-import Image06 from '../../../images/transactions-image-05.svg';
-import Image07 from '../../../images/transactions-image-06.svg';
-import Image08 from '../../../images/transactions-image-07.svg';
-import Image09 from '../../../images/transactions-image-08.svg';
 import AuthService from '../../../services/AuthService';
 import TableItem from './TableItem';
 
@@ -100,6 +91,9 @@ function Table({ selectedItems, setTransactionPanelOpen, searchText }) {
                   </th>
                   <th className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
                     <div className='font-semibold text-left'>Xác thực</div>
+                  </th>
+                  <th className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
+                    <div className='font-semibold text-left'>Cập nhật hồ sơ</div>
                   </th>
                 </tr>
               </thead>

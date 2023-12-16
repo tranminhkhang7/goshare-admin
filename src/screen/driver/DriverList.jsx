@@ -3,8 +3,8 @@ import React, { useState } from 'react';
 import Header from '../../partials/Header';
 import SearchForm from '../../partials/actions/SearchForm';
 import Table from './components/Table';
-import Sidebar from '../../partials/Sidebar';
-// import Sidebar from '../../partials/SidebarOriginal';
+// import Sidebar from '../../partials/Sidebar';
+import Sidebar from '../../partials/SidebarOriginal';
 
 function DriverList() {
   const [sidebarOpen, setSidebarOpen] = useState(false);

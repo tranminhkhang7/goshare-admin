@@ -20,9 +20,31 @@ function TableItem(props) {
   const [feedbackModalOpen, setFeedbackModalOpen] = useState(false);
   const [verifyModalOpen, setVerifyModalOpen] = useState(false);
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
+  const [updateDocumentModalOpen, setUpdateDocumentModalOpen] = useState(false);
   const [verifyId, setVerifyId] = useState(null);
   const [verifyTo, setVerifyTo] = useState(null);
   const [verifiedToValidation, setVerifiedToValidation] = useState(null);
+
+  //   - 0:  Id x2
+  // - 1:  DriverLicense x2
+  // - 2 : VehicleRegistration x2
+  // - 3 : RegistrationCertificate x1
+  // - 4:  DriverPicture x1
+
+  const [imageId_1, setImageId_1] = useState();
+  const [imageId_2, setImageId_2] = useState();
+
+  const [imageDriverLicense_1, setImageDriverLicense_1] = useState();
+  const [imageDriverLicense_2, setImageDriverLicense_2] = useState();
+
+  const [imageVehicleRegistration_1, setImageVehicleRegistration_1] =
+    useState();
+  const [imageVehicleRegistration_2, setImageVehicleRegistration_2] =
+    useState();
+
+  const [imageRegistrationCertificate, setImageRegistrationCertificate] =
+    useState();
+  const [imageDriverPicture, setImageDriverPicture] = useState();
 
   const verifyDriver = async () => {
     try {
@@ -58,6 +80,120 @@ function TableItem(props) {
     verifyDriver();
     setVerifyModalOpen(false);
     setUpdateModalOpen(false);
+  };
+
+  const handleUpdateDocument = async () => {
+    // const d1 = new FormData();
+    // d1.append('file', imageId_1);
+    // const d2 = new FormData();
+    // d2.append('file', imageId_2);
+    // const d3 = new FormData();
+    // d3.append('file', imageDriverLicense_1);
+    // const d4 = new FormData();
+    // d4.append('file', imageDriverLicense_2);
+    // const d5 = new FormData();
+    // d5.append('file', imageVehicleRegistration_1);
+    // const d6 = new FormData();
+    // d6.append('file', imageVehicleRegistration_2);
+    // const d7 = new FormData();
+    // d7.append('file', imageRegistrationCertificate);
+    // const d8 = new FormData();
+    // d8.append('file', imageDriverPicture);
+
+    console.log(imageId_1);
+
+    var List = [];
+    var object = {
+      pic: imageId_1,
+      type: 0,
+    };
+    List.push(object);
+    object = {
+      pic: imageId_1,
+      type: 0,
+    };
+    List.push(object);
+    object = {
+      pic: imageId_1,
+      type: 1,
+    };
+    List.push(object);
+    object = {
+      pic: imageId_1,
+      type: 1,
+    };
+    List.push(object);
+    object = {
+      pic: imageId_1,
+      type: 2,
+    };
+    List.push(object);
+    object = {
+      pic: imageId_1,
+      type: 2,
+    };
+    List.push(object);
+    object = {
+      pic: imageId_1,
+      type: 3,
+    };
+    List.push(object);
+    object = {
+      pic: imageId_1,
+      type: 4,
+    };
+    List.push(object);
+
+    // var object = {
+    //   pic: d2,
+    //   type: 0,
+    // };
+    // List.push(object);
+    // var object = {
+    //   pic: d3,
+    //   type: 1,
+    // };
+    // List.push(object);
+    // var object = {
+    //   pic: d4,
+    //   type: 1,
+    // };
+    // List.push(object);
+    // var object = {
+    //   pic: d5,
+    //   type: 2,
+    // };
+    // List.push(object);
+    // var object = {
+    //   pic: d6,
+    //   type: 2,
+    // };
+    // List.push(object);
+    // var object = {
+    //   pic: d7,
+    //   type: 3,
+    // };
+    // List.push(object);
+    // var object = {
+    //   pic: d8,
+    //   type: 4,
+    // };
+    // List.push(object);
+
+    try {
+      const payload = {
+        List: List,
+      };
+      const result = await AuthService.updateDriverDocument(props.id, payload);
+      console.log(result.data);
+      if (result.status === 200) {
+        window.location.reload();
+      }
+      // if (result.status === 200) {
+      //   console.log(result.data.items);
+      //   setList(result.data.items);
+      // }
+    } catch {}
   };
 
   const handleShowDetail = () => {
@@ -141,6 +277,18 @@ function TableItem(props) {
               CHỈNH SỬA
             </button>
           )}
+        </td>
+
+        <td className='w-px px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
+          <button
+            className={`text-indigo-500 bg-white btn border-slate-200 hover:border-slate-300`}
+            onClick={(e) => {
+              e.stopPropagation();
+              setUpdateDocumentModalOpen(true);
+            }}
+          >
+            CẬP NHẬT HỒ SƠ
+          </button>
         </td>
       </tr>
       <ModalBasic
@@ -444,6 +592,155 @@ function TableItem(props) {
               onClick={handleVerify}
             >
               Cập nhật
+            </button>
+          </div>
+        </div>
+      </ModalBasic>
+
+      <ModalBasic
+        modalOpen={updateDocumentModalOpen}
+        setModalOpen={setUpdateDocumentModalOpen}
+        title='Cập nhật hồ sơ tài xế'
+      >
+        <div className='px-5 py-4'>
+          <div className='space-y-3'>
+            <h1 className='text-base font-bold'>Ảnh CCCD/CMND 🪪</h1>
+            <div>
+              <label className='block mb-1 text-sm font-medium' htmlFor='name'>
+                Ảnh 1:
+              </label>
+              <input
+                type='file'
+                onChange={(e) => {
+                  // const file = e.target.files[0];
+                  // const reader = new FileReader();
+                  // reader.onload = (event) => {
+                  //   const binaryData = event.target.result;
+                  //   setImageId_1(binaryData);
+                  // };
+                  // reader.readAsArrayBuffer(file);
+
+                  setImageId_1(e.target.files[0]);
+                }}
+                className='w-full px-2 py-1 form-input'
+              />
+            </div>
+
+            <div>
+              <label className='block mb-1 text-sm font-medium' htmlFor='name'>
+                Ảnh 2:
+              </label>
+              <input
+                type='file'
+                onChange={(e) => {
+                  setImageId_2(e.target.files[0]);
+                }}
+                className='w-full px-2 py-1 form-input'
+              />
+            </div>
+
+            <h1 className='text-base font-bold'>Ảnh bằng lái xe 🪪</h1>
+            <div>
+              <label className='block mb-1 text-sm font-medium' htmlFor='name'>
+                Ảnh 1:
+              </label>
+              <input
+                type='file'
+                onChange={(e) => {
+                  // const file = e.target.files[0];
+                  // const reader = new FileReader();
+                  // reader.onload = (event) => {
+                  //   const binaryData = event.target.result;
+                  //   setImageDriverLicense_1(binaryData);
+                  // };
+                  // reader.readAsArrayBuffer(file);
+                  setImageDriverLicense_1(e.target.files[0]);
+                }}
+                className='w-full px-2 py-1 form-input'
+              />
+            </div>
+
+            <div>
+              <label className='block mb-1 text-sm font-medium' htmlFor='name'>
+                Ảnh 2:
+              </label>
+              <input
+                type='file'
+                onChange={(e) => {
+                  setImageDriverLicense_2(e.target.files[0]);
+                }}
+                className='w-full px-2 py-1 form-input'
+              />
+            </div>
+
+            <h1 className='text-base font-bold'>Ảnh đăng ký xe 🚗</h1>
+            <div>
+              <label className='block mb-1 text-sm font-medium' htmlFor='name'>
+                Ảnh 1:
+              </label>
+              <input
+                type='file'
+                onChange={(e) => {
+                  setImageVehicleRegistration_1(e.target.files[0]);
+                }}
+                className='w-full px-2 py-1 form-input'
+              />
+            </div>
+
+            <div>
+              <label className='block mb-1 text-sm font-medium' htmlFor='name'>
+                Ảnh 2:
+              </label>
+              <input
+                type='file'
+                onChange={(e) => {
+                  setImageVehicleRegistration_2(e.target.files[0]);
+                }}
+                className='w-full px-2 py-1 form-input'
+              />
+            </div>
+
+            <h1 className='text-base font-bold'>Ảnh đăng kiểm 🪪</h1>
+            <div>
+              <input
+                type='file'
+                onChange={(e) => {
+                  setImageRegistrationCertificate(e.target.files[0]);
+                }}
+                className='w-full px-2 py-1 form-input'
+              />
+            </div>
+
+            <h1 className='text-base font-bold'>Ảnh tài xế 🧔</h1>
+            <div>
+              <input
+                type='file'
+                onChange={(e) => {
+                  setImageDriverPicture(e.target.files[0]);
+                }}
+                className='w-full px-2 py-1 form-input'
+              />
+            </div>
+          </div>
+          <p className='mt-2 text-red-500 ml'>{verifiedToValidation}</p>
+        </div>
+
+        <div className='px-5 py-4 border-t border-slate-200'>
+          <div className='flex flex-wrap justify-end space-x-2'>
+            <button
+              className='btn-sm border-slate-200 hover:border-slate-300 text-slate-600'
+              onClick={(e) => {
+                e.stopPropagation();
+                setUpdateDocumentModalOpen(false);
+              }}
+            >
+              Huỷ
+            </button>
+            <button
+              className='text-white bg-indigo-500 btn-sm hover:bg-indigo-600'
+              onClick={handleUpdateDocument}
+            >
+              Cập nhậtt
             </button>
           </div>
         </div>

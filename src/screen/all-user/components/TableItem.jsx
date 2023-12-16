@@ -8,68 +8,59 @@ import {
 } from '../../../utils/Utils';
 
 const statusMapping = {
-  0: 'PENDING',
-  1: 'GOING_TO_PICKUP',
-  2: 'GOING',
-  3: 'COMPLETED',
-  4: 'CANCELED',
-  5: 'TIMEDOUT',
+  0: 'TÀI XẾ',
+  1: 'NGƯỜI PHỤ THUỘC',
+  2: 'NGƯỜI BẢO HỘ',
 };
 
 const statusStyles = {
-  PENDING: 'bg-orange-100 text-orange-600', //
-  GOING_TO_PICKUP: 'bg-blue-100 text-blue-600', //
-  GOING: 'bg-blue-500 text-white', //
-  COMPLETED: 'bg-green-500 text-white', //
-  CANCELED: 'bg-red-500 text-white', //
-  TIMEDOUT: 'bg-gray-200 text-black', //
+  0: 'bg-orange-100 text-orange-600',
+  1: 'bg-blue-100 text-blue-600',
+  2: 'bg-pink-100 text-pink-600',
+};
+
+const genderMapping = {
+  0: 'NAM',
+  1: 'NỮ',
+};
+
+const genderStyles = {
+  0: 'bg-yellow-100 text-yellow-600',
+  1: 'bg-purple-100 text-purple-600',
 };
 
 function TableItem(props) {
   const [detailModal, setDetailModal] = useState(false);
-  const [cancelTripModal, setCancelTripModal] = useState(false);
-  // const [verifyModalOpen, setVerifyModalOpen] = useState(false);
-  // const [updateModalOpen, setUpdateModalOpen] = useState(false);
-  // const [verifyId, setVerifyId] = useState(null);
-  // const [verifyTo, setVerifyTo] = useState(null);
-  // const [verifiedToValidation, setVerifiedToValidation] = useState(null);
+  const [banModal, setBanModal] = useState(false);
+  const [disabledReason, setDisabledReason] = useState('');
+  const [verifyDisabledReason, setVerifyDisabledReason] = useState(null);
 
-  // const verifyDriver = async () => {
-  //   try {
-  //     const payload = {
-  //       id: verifyId,
-  //       verifiedTo: verifyTo,
-  //     };
-  //     const result = await AuthService.verifyDriver(payload);
-  //     if (result.status === 200) {
-  //       window.location.reload();
-  //     }
-  //   } catch {}
-  // };
+  var role = '';
+  if (props?.isdriver) role = 0;
+  else if (props?.guardian) role = 1;
+  else role = 2;
 
-  // const [document, setDocument] = useState(null);
-  // const fetchDriverDetail = async () => {
-  //   try {
-  //     const result = await AuthService.getDriverDocument(props.id);
-  //     console.log(result.data);
-  //     setDocument(result.data);
-  //     // if (result.status === 200) {
-  //     //   console.log(result.data.items);
-  //     //   setList(result.data.items);
-  //     // }
-  //   } catch {}
-  // };
-
-  const handleCancelTrip = async () => {
+  const disableUser = async () => {
     try {
-      const result = await AuthService.cancelTrip(props.id);
+      const payload = {
+        disabledReason: disabledReason,
+      };
+      const result = await AuthService.disableUser(props.id, payload);
       if (result.status === 200) {
-        setDetailModal(false);
-        setCancelTripModal(false);
         window.location.reload();
-      } else {
       }
     } catch {}
+  };
+
+  const handleDisableUser = () => {
+    console.log(disabledReason, verifyDisabledReason);
+    if (!disabledReason) {
+      setVerifyDisabledReason(true);
+      return;
+    }
+    disableUser();
+    // setVerifyModalOpen(false);
+    // setUpdateModalOpen(false);
   };
 
   return (
@@ -84,491 +75,71 @@ function TableItem(props) {
         >
           <div className='text-left'>
             <div
+              className={`text-xs inline-flex font-medium rounded-full text-center px-2.5 py-1 ${statusStyles[role]}`}
+            >
+              {statusMapping[role]}
+            </div>
+          </div>
+        </td>
+
+        <td className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
+          <div className='text-left'>{props.name}</div>
+        </td>
+
+        <td className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
+          <div className='text-left'>{formatPhoneNumber(props.phone)}</div>
+        </td>
+
+        <td className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
+          <div className='text-left'>{formatDateTime(props.createTime)}</div>
+        </td>
+
+        <td className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
+          <div className='text-left'>
+            <div
               className={`text-xs inline-flex font-medium rounded-full text-center px-2.5 py-1 ${
-                statusStyles[statusMapping[props.status]]
+                genderStyles[props.gender]
               }`}
             >
-              {statusMapping[props.status]}
+              {genderMapping[props.gender]}
             </div>
           </div>
         </td>
 
         <td className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
           <div className='text-left'>
-            {props.driver?.name ? props.driver?.name : '-'}
-          </div>
-        </td>
-
-        <td className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
-          <div className='text-left'>
-            {props.driver?.phone ? formatPhoneNumber(props.driver?.phone) : '-'}
-          </div>
-        </td>
-
-        <td className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
-          <div className='text-left'>{props.booker?.name}</div>
-        </td>
-
-        <td className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
-          <div className='text-left'>
-            {formatPhoneNumber(props.booker?.phone)}
-          </div>
-        </td>
-
-        <td className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
-          <div className='text-left'>{props.startLocation?.address}</div>
-        </td>
-
-        <td className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
-          <div className='text-left'>{props.endLocation?.address}</div>
-        </td>
-
-        <td className='w-px px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
-          {props.status === 1 ? (
             <button
               className={`text-white bg-indigo-500 btn border-slate-200 hover:border-slate-300`}
               onClick={(e) => {
                 e.stopPropagation();
-                setCancelTripModal(true);
+                setBanModal(true);
               }}
             >
-              HUỶ CHUYẾN
+              VÔ HIỆU HOÁ
             </button>
-          ) : (
-            <>-</>
-          )}
+          </div>
         </td>
       </tr>
       <ModalBasic
         modalOpen={detailModal}
         setModalOpen={setDetailModal}
-        title='Thông tin chuyến chi tiết'
+        title='Thông tin người dùng chi tiết'
       >
         <div className='px-5 py-4'>
           <div className='space-y-3'>
-            <h1 className='text-base font-bold'>Thông tin tài xế 👨‍💼</h1>
-
-            <div className='flex gap-4'>
-              <div className='flex items-center justify-center w-1/4 h-full'>
-                <img
-                  className='bg-contain rounded-2xl'
-                  src={
-                    props.driver?.avatarUrl
-                      ? props.driver?.avatarUrl
-                      : 'https://cdn-icons-png.flaticon.com/512/3177/3177440.png'
-                  }
-                  style={{ height: 'auto', width: 'auto' }}
-                />
-              </div>
-              <div className='flex flex-col flex-1'>
-                <div>
-                  <label
-                    className='block mb-1 text-sm font-medium'
-                    htmlFor='name'
-                  >
-                    ID
-                  </label>
-                  <input
-                    value={props.driver?.id}
-                    disabled
-                    className='w-full px-2 py-1 form-input'
-                    type='text'
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label
-                    className='block mb-1 text-sm font-medium'
-                    htmlFor='name'
-                  >
-                    Tên tài xế
-                  </label>
-                  <input
-                    value={props.driver?.name}
-                    disabled
-                    className='w-full px-2 py-1 form-input'
-                    type='text'
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label
-                    className='block mb-1 text-sm font-medium'
-                    htmlFor='name'
-                  >
-                    Số điện thoại
-                  </label>
-                  <input
-                    value={formatPhoneNumber(props.driver?.phone)}
-                    disabled
-                    className='w-full px-2 py-1 form-input'
-                    type='text'
-                    required
-                  />
-                </div>
-              </div>
-            </div>
-
-            <h1 className='text-base font-bold'>Thông tin người đặt 🧔</h1>
-            <div className='flex gap-4'>
-              <div className='flex items-center justify-center w-1/4 h-full'>
-                <img
-                  className='bg-contain rounded-2xl'
-                  src={
-                    props.booker?.avatarUrl
-                      ? props.booker?.avatarUrl
-                      : 'https://cdn-icons-png.flaticon.com/512/3177/3177440.png'
-                  }
-                  style={{ height: 'auto', width: 'auto' }}
-                />
-              </div>
-              <div className='flex flex-col flex-1'>
-                <div>
-                  <label
-                    className='block mb-1 text-sm font-medium'
-                    htmlFor='name'
-                  >
-                    ID
-                  </label>
-                  <input
-                    value={props.booker?.id}
-                    disabled
-                    className='w-full px-2 py-1 form-input'
-                    type='text'
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label
-                    className='block mb-1 text-sm font-medium'
-                    htmlFor='name'
-                  >
-                    Tên người đặt
-                  </label>
-                  <input
-                    value={props.booker?.name}
-                    disabled
-                    className='w-full px-2 py-1 form-input'
-                    type='text'
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label
-                    className='block mb-1 text-sm font-medium'
-                    htmlFor='name'
-                  >
-                    Số điện thoại
-                  </label>
-                  <input
-                    value={formatPhoneNumber(props.booker?.phone)}
-                    disabled
-                    className='w-full px-2 py-1 form-input'
-                    type='text'
-                    required
-                  />
-                </div>
-              </div>
-            </div>
-
-            {props.booker?.id !== props.passenger?.id && (
-              <>
-                <h1 className='text-base font-bold'>Thông tin người đi 🧓</h1>
-                <div className='flex gap-4'>
-                  <div className='flex flex-col flex-1'>
-                    <div>
-                      <label
-                        className='block mb-1 text-sm font-medium'
-                        htmlFor='name'
-                      >
-                        Tên người đi
-                      </label>
-                      <input
-                        value={props.passenger?.name}
-                        disabled
-                        className='w-full px-2 py-1 form-input'
-                        type='text'
-                        required
-                      />
-                    </div>
-
-                    <div>
-                      <label
-                        className='block mb-1 text-sm font-medium'
-                        htmlFor='name'
-                      >
-                        Số điện thoại
-                      </label>
-                      <input
-                        value={formatPhoneNumber(props.passenger?.phone)}
-                        disabled
-                        className='w-full px-2 py-1 form-input'
-                        type='text'
-                        required
-                      />
-                    </div>
-                  </div>
-                </div>
-              </>
-            )}
-
-            <h1 className='text-base font-bold'>Thông tin chuyến đi 🚗</h1>
-            <>
-              <div>
-                <label
-                  className='block mb-1 text-sm font-medium'
-                  htmlFor='name'
-                >
-                  Khoảng cách chuyến đi
-                </label>
-                <input
-                  value={props.distance + 'km'}
-                  disabled
-                  className='w-full px-2 py-1 form-input'
-                  type='text'
-                  required
-                />
-              </div>
-
-              <div>
-                <label
-                  className='block mb-1 text-sm font-medium'
-                  htmlFor='name'
-                >
-                  Giá cước
-                </label>
-                <input
-                  value={props.price + 'đ'}
-                  disabled
-                  className='w-full px-2 py-1 form-input'
-                  type='text'
-                  required
-                />
-              </div>
-
-              <div>
-                <label
-                  className='block mb-1 text-sm font-medium'
-                  htmlFor='name'
-                >
-                  Lời nhắn của khách
-                </label>
-                <input
-                  value={props.note}
-                  disabled
-                  className='w-full px-2 py-1 form-input'
-                  type='text'
-                  required
-                />
-              </div>
-
-              <div>
-                <label
-                  className='block mb-1 text-sm font-medium'
-                  htmlFor='name'
-                >
-                  Thời điểm bắt đầu
-                </label>
-                <input
-                  value={formatDateTime(props.startTime)}
-                  disabled
-                  className='w-full px-2 py-1 form-input'
-                  type='text'
-                  required
-                />
-              </div>
-
-              <div>
-                <label
-                  className='block mb-1 text-sm font-medium'
-                  htmlFor='name'
-                >
-                  Thời điểm tài xế đón khách
-                </label>
-                <input
-                  value={formatDateTime(props.pickupTime)}
-                  disabled
-                  className='w-full px-2 py-1 form-input'
-                  type='text'
-                  required
-                />
-              </div>
-
-              {props.status === 3 && (
-                <>
-                  <div>
-                    <label
-                      className='block mb-1 text-sm font-medium'
-                      htmlFor='name'
-                    >
-                      Thời điểm kết thúc
-                    </label>
-                    <input
-                      value={formatDateTime(props.endTime)}
-                      disabled
-                      className='w-full px-2 py-1 form-input'
-                      type='text'
-                      required
-                    />
-                  </div>
-                </>
-              )}
-
-              <h2 className='text-base font-semibold'>• Điểm đón khách 📍</h2>
-              <div className='flex flex-col flex-1'>
-                <div>
-                  <label
-                    className='block mb-1 text-sm font-medium'
-                    htmlFor='name'
-                  >
-                    ID điểm đón
-                  </label>
-                  <input
-                    value={props.startLocation?.id}
-                    disabled
-                    className='w-full px-2 py-1 form-input'
-                    type='text'
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label
-                    className='block mb-1 text-sm font-medium'
-                    htmlFor='name'
-                  >
-                    Địa chỉ cụ thể
-                  </label>
-                  <input
-                    value={props.startLocation?.address}
-                    disabled
-                    className='w-full px-2 py-1 form-input'
-                    type='text'
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label
-                    className='block mb-1 text-sm font-medium'
-                    htmlFor='name'
-                  >
-                    Kinh độ; Vĩ độ
-                  </label>
-                  <input
-                    value={
-                      props.startLocation?.latitude +
-                      '; ' +
-                      props.startLocation?.longitude
-                    }
-                    disabled
-                    className='w-full px-2 py-1 form-input'
-                    type='text'
-                    required
-                  />
-                </div>
-              </div>
-              <h2 className='text-base font-semibold'>• Điểm trả khách 📍</h2>
-              <div className='flex flex-col flex-1'>
-                <div>
-                  <label
-                    className='block mb-1 text-sm font-medium'
-                    htmlFor='name'
-                  >
-                    ID điểm trả
-                  </label>
-                  <input
-                    value={props.endLocation?.id}
-                    disabled
-                    className='w-full px-2 py-1 form-input'
-                    type='text'
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label
-                    className='block mb-1 text-sm font-medium'
-                    htmlFor='name'
-                  >
-                    Địa chỉ cụ thể
-                  </label>
-                  <input
-                    value={props.endLocation?.address}
-                    disabled
-                    className='w-full px-2 py-1 form-input'
-                    type='text'
-                    required
-                  />
-                </div>
-
-                <div>
-                  <label
-                    className='block mb-1 text-sm font-medium'
-                    htmlFor='name'
-                  >
-                    Kinh độ; Vĩ độ
-                  </label>
-                  <input
-                    value={
-                      props.endLocation?.latitude +
-                      '; ' +
-                      props.endLocation?.longitude
-                    }
-                    disabled
-                    className='w-full px-2 py-1 form-input'
-                    type='text'
-                    required
-                  />
-                </div>
-              </div>
-            </>
-
-            <h1 className='text-base font-bold'>Thông tin xe 🚖</h1>
             <div>
               <label className='block mb-1 text-sm font-medium' htmlFor='name'>
-                Biển số xe
+                Tên tài xế
               </label>
               <input
-                value={props.driver?.car?.licensePlate}
+                id='name'
+                value={props.name}
                 disabled
                 className='w-full px-2 py-1 form-input'
                 type='text'
                 required
               />
             </div>
-
-            <div>
-              <label className='block mb-1 text-sm font-medium' htmlFor='name'>
-                Hãng xe
-              </label>
-              <input
-                value={props.driver?.car?.make}
-                disabled
-                className='w-full px-2 py-1 form-input'
-                type='text'
-                required
-              />
-            </div>
-
-            <div>
-              <label className='block mb-1 text-sm font-medium' htmlFor='name'>
-                Dòng xe
-              </label>
-              <input
-                value={props.driver?.car?.model}
-                disabled
-                className='w-full px-2 py-1 form-input'
-                type='text'
-                required
-              />
-            </div>
-
-            {/* 
             <div>
               <label className='block mb-1 text-sm font-medium' htmlFor='name'>
                 Giới tính
@@ -583,7 +154,6 @@ function TableItem(props) {
                 {props.gender === 1 ? 'Nam' : 'Nữ'}
               </div>
             </div>
-
             <div>
               <label className='block mb-1 text-sm font-medium' htmlFor='name'>
                 Ngày tháng năm sinh
@@ -595,13 +165,12 @@ function TableItem(props) {
                 required
               />
             </div>
-
             <div>
               <label className='block mb-1 text-sm font-medium' htmlFor='email'>
                 Số điện thoại
               </label>
               <input
-                value={props.phone}
+                value={formatPhoneNumber(props.phone)}
                 disabled
                 className='w-full px-2 py-1 form-input'
                 required
@@ -609,33 +178,11 @@ function TableItem(props) {
             </div>
 
             <div>
-              <label
-                className='block mb-1 text-sm font-medium'
-                htmlFor='feedback'
-              >
-                Trạng thái
-              </label>
-              <div
-                className={`text-xs inline-flex font-medium rounded-full text-center px-2.5 py-1 ${
-                  props.verifyTo > today
-                    ? 'bg-emerald-100 text-emerald-600'
-                    : 'bg-rose-100 text-rose-500'
-                } `}
-              >
-                {props.verifyTo > today ? 'Đã xác thực' : 'Chưa xác thực'}
-              </div>
-            </div>
-
-            <div>
               <label className='block mb-1 text-sm font-medium' htmlFor='email'>
                 Thời gian đăng ký
               </label>
               <input
-                value={
-                  props.createTime.substring(0, 10) +
-                  ' ' +
-                  props.createTime.substring(11, 19)
-                }
+                value={formatDateTime(props.createTime)}
                 disabled
                 className='w-full px-2 py-1 form-input'
                 required
@@ -647,11 +194,7 @@ function TableItem(props) {
                 Thời gian cập nhật gần nhất
               </label>
               <input
-                value={
-                  props.updatedTime.substring(0, 10) +
-                  ' ' +
-                  props.updatedTime.substring(11, 19)
-                }
+                value={formatDateTime(props.updatedTime)}
                 disabled
                 className='w-full px-2 py-1 form-input'
                 required
@@ -675,72 +218,113 @@ function TableItem(props) {
               </div>
             )}
 
-            <div>
-              <label className='block mb-1 text-sm font-medium' htmlFor='email'>
-                Biển số xe
-              </label>
-              <input
-                value={props.car.licensePlate}
-                disabled
-                className='w-full px-2 py-1 form-input'
-                required
-              />
-            </div>
+            {props.guardianId && (
+              <>
+                <h1 className='text-base font-bold'>
+                  Thông tin người phụ thuộc
+                </h1>
+                <div className='flex gap-4'>
+                  <div className='flex items-center justify-center w-1/4 h-full'>
+                    <img
+                      className='bg-contain rounded-2xl'
+                      src={
+                        props.guardian?.avatarUrl
+                          ? props.guardian?.avatarUrl
+                          : 'https://cdn-icons-png.flaticon.com/512/3177/3177440.png'
+                      }
+                      style={{ height: 'auto', width: 'auto' }}
+                    />
+                  </div>
+                  <div className='flex flex-col flex-1'>
+                    <div>
+                      <label
+                        className='block mb-1 text-sm font-medium'
+                        htmlFor='email'
+                      >
+                        ID
+                      </label>
+                      <input
+                        value={props.guardian?.id}
+                        disabled
+                        className='w-full px-2 py-1 form-input'
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label
+                        className='block mb-1 text-sm font-medium'
+                        htmlFor='email'
+                      >
+                        Tên
+                      </label>
+                      <input
+                        value={props.guardian?.name}
+                        disabled
+                        className='w-full px-2 py-1 form-input'
+                        required
+                      />
+                    </div>
+                    <div>
+                      <label
+                        className='block mb-1 text-sm font-medium'
+                        htmlFor='email'
+                      >
+                        Số điện thoại
+                      </label>
+                      <input
+                        value={props.guardian?.phone}
+                        disabled
+                        className='w-full px-2 py-1 form-input'
+                        required
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  <label
+                    className='block mb-1 text-sm font-medium'
+                    htmlFor='email'
+                  >
+                    Ngày tháng năm sinh
+                  </label>
+                  <input
+                    value={formatDate(props.guardian?.birth)}
+                    disabled
+                    className='w-full px-2 py-1 form-input'
+                    required
+                  />
+                </div>
+                <div>
+                  <label
+                    className='block mb-1 text-sm font-medium'
+                    htmlFor='email'
+                  >
+                    Thời gian đăng ký
+                  </label>
+                  <input
+                    value={formatDateTime(props.guardian?.createTime)}
+                    disabled
+                    className='w-full px-2 py-1 form-input'
+                    required
+                  />
+                </div>
 
-            <div>
-              <label className='block mb-1 text-sm font-medium' htmlFor='email'>
-                Hãng xe
-              </label>
-              <input
-                value={props.car.make}
-                disabled
-                className='w-full px-2 py-1 form-input'
-                required
-              />
-            </div>
-
-            <div>
-              <label className='block mb-1 text-sm font-medium' htmlFor='email'>
-                Dòng xe
-              </label>
-              <input
-                value={props.car.model}
-                disabled
-                className='w-full px-2 py-1 form-input'
-                required
-              />
-            </div>
-
-            {props.verifyTo > today && (
-              <div>
-                <label
-                  className='block mb-1 text-sm font-medium'
-                  htmlFor='email'
-                >
-                  Còn hạn đến ngày
-                </label>
-                <input
-                  value={props.verifyTo.substring(0, 10)}
-                  disabled
-                  className='w-full px-2 py-1 form-input'
-                  required
-                />
-              </div>
+                <div>
+                  <label
+                    className='block mb-1 text-sm font-medium'
+                    htmlFor='email'
+                  >
+                    Thời gian cập nhật gần nhất
+                  </label>
+                  <input
+                    value={formatDateTime(props.guardian?.updatedTime)}
+                    disabled
+                    className='w-full px-2 py-1 form-input'
+                    required
+                  />
+                </div>
+              </>
             )}
-
-            {document && (
-              <div>
-                <label
-                  className='block mb-1 text-sm font-medium'
-                  htmlFor='email'
-                >
-                  Giấy phép
-                </label>
-                {document.map((doc) => (
-                  <img key={doc.id} src={doc.url} alt={`Document ${doc.id}`} />
-                ))}
-              </div>
-            )} */}
           </div>
         </div>
 
@@ -760,21 +344,33 @@ function TableItem(props) {
       </ModalBasic>
 
       <ModalBasic
-        modalOpen={cancelTripModal}
-        setModalOpen={setCancelTripModal}
-        title='Bạn có muốn huỷ chuyến xe này?'
+        modalOpen={banModal}
+        setModalOpen={setBanModal}
+        title='Vô hiệu hoá tài khoản'
       >
         <div className='px-5 py-4'>
           <div className='space-y-3'>
             <div className='font-bold'>
-              Bạn có chắc chắn muốn huỷ chuyến xe này?
+              Bạn có chắc chắn muốn vô hiệu hoá tài khoản này? Nếu có vui lòng
+              điền lý do bên dưới.
             </div>
-            <div className=''>
-              Lưu ý: Các giao dịch đã được thực hiện giữa tài xế và khách sẽ
-              không được hoàn lại. Vui lòng liên hệ trực tiếp với tài xế để xử
-              lý nếu có bất kỳ thắc mắc nào về các vấn đề hoàn tiền.
+            <div>
+              <textarea
+                value={disabledReason}
+                className='w-full px-2 py-1 form-input'
+                onChange={(e) => {
+                  setDisabledReason(e.target.value);
+                  setVerifyDisabledReason(false);
+                }}
+                required
+              />
             </div>
           </div>
+          {verifyDisabledReason && (
+            <p className='mt-2 text-red-500 ml'>
+              Vui lòng chọn nhập lý do vô hiệu hoá
+            </p>
+          )}
         </div>
 
         <div className='px-5 py-4 border-t border-slate-200'>
@@ -783,20 +379,73 @@ function TableItem(props) {
               className='btn-sm border-slate-200 hover:border-slate-300 text-slate-600'
               onClick={(e) => {
                 e.stopPropagation();
-                setCancelTripModal(false);
+                setBanModal(false);
               }}
             >
-              Đóng
+              Huỷ
             </button>
             <button
               className='text-white bg-indigo-500 btn-sm hover:bg-indigo-600'
-              onClick={handleCancelTrip}
+              onClick={handleDisableUser}
             >
-              Huỷ chuyến
+              Vô hiệu hoá
             </button>
           </div>
         </div>
       </ModalBasic>
+      {/*
+      <ModalBasic
+        modalOpen={updateModalOpen}
+        setModalOpen={setUpdateModalOpen}
+        title='Cập nhật hạn xác thực'
+      >
+        <div className='px-5 py-4'>
+          <div className='space-y-3'>
+            <div className='font-bold'>
+              Bạn có chắc chắn muốn hồ sơ tài khoản này? Nếu có vui lòng chọn
+              ngày hết hạn xác thực mới bên dưới.
+            </div>
+            <div>
+              <label className='block mb-1 text-sm font-medium' htmlFor='name'>
+                Ngày hết hạn xác thực
+              </label>
+              <input
+                type='date'
+                defaultValue={props.verifyTo.substring(0, 10)}
+                value={verifyTo}
+                onChange={(e) => {
+                  setVerifyTo(e.target.value);
+                  setVerifiedToValidation(null);
+                }}
+                className='w-full px-2 py-1 form-input'
+                // min={today}
+                required
+              />
+            </div>
+          </div>
+          <p className='mt-2 text-red-500 ml'>{verifiedToValidation}</p>
+        </div>
+
+        <div className='px-5 py-4 border-t border-slate-200'>
+          <div className='flex flex-wrap justify-end space-x-2'>
+            <button
+              className='btn-sm border-slate-200 hover:border-slate-300 text-slate-600'
+              onClick={(e) => {
+                e.stopPropagation();
+                setUpdateModalOpen(false);
+              }}
+            >
+              Huỷ
+            </button>
+            <button
+              className='text-white bg-indigo-500 btn-sm hover:bg-indigo-600'
+              onClick={handleVerify}
+            >
+              Cập nhật
+            </button>
+          </div>
+        </div>
+      </ModalBasic> */}
     </>
   );
 }

@@ -28,9 +28,31 @@ axiosInstance.interceptors.request.use(
   }
 );
 
+const axiosInstanceMultipart = axios.create({
+  headers: {
+    'Content-Type': 'multipart/form-data',
+  },
+});
+
+axiosInstanceMultipart.interceptors.request.use(
+  (config) => {
+    const accessToken = getLocalToken();
+
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
+    }
+
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
 class AuthService {
   constructor() {
     this.api = axiosInstance;
+    this.apiMultipart = axiosInstanceMultipart;
   }
 
   login(payload) {
@@ -55,6 +77,21 @@ class AuthService {
 
   cancelTrip(tripId) {
     return this.api.post(`${API_BASE_URL}/trip/cancel/${tripId}`);
+  }
+
+  getUsersList() {
+    return this.api.get(`${API_BASE_URL}/user`);
+  }
+
+  disableUser(userId, payload) {
+    return this.api.put(`${API_BASE_URL}/user/ban/${userId}`, payload);
+  }
+
+  updateDriverDocument(driverId, payload) {
+    return this.apiMultipart.put(
+      `${API_BASE_URL}/driver/documents/${driverId}`,
+      payload
+    );
   }
 }
 
