@@ -38,7 +38,7 @@ class AuthService {
   }
 
   getDriversList() {
-    return this.api.get(`${API_BASE_URL}/user/drivers`);
+    return this.api.get(`${API_BASE_URL}/user/drivers?pageSize=500`);
   }
 
   verifyDriver(payload) {
@@ -47,6 +47,29 @@ class AuthService {
 
   getDriverDocument(driverId) {
     return this.api.get(`${API_BASE_URL}/user/driverdocuments/${driverId}`);
+  }
+
+  getTripsList() {
+    return this.api.get(`${API_BASE_URL}/trip?pageSize=500`);
+  }
+
+  cancelTrip(tripId) {
+    return this.api.post(`${API_BASE_URL}/trip/cancel/${tripId}`);
+  }
+
+  getUsersList() {
+    return this.api.get(`${API_BASE_URL}/user?pageSize=500`);
+  }
+
+  disableUser(userId, payload) {
+    return this.api.put(`${API_BASE_URL}/user/ban/${userId}`, payload);
+  }
+
+  updateDriverDocument(driverId, payload) {
+    return this.api.put(
+      `${API_BASE_URL}/driver/documents/${driverId}`,
+      payload
+    );
   }
 }
 

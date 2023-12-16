@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import ModalBasic from '../../../components/ModalBasic';
 import AuthService from '../../../services/AuthService';
+import { formatPhoneNumber } from '../../../utils/Utils';
+import axios from 'axios';
 
 function TableItem(props) {
   var today = new Date();
@@ -16,14 +18,34 @@ function TableItem(props) {
   yyyy = fiveDaysFromToday.getFullYear();
   fiveDaysFromToday = yyyy + '-' + mm + '-' + dd;
 
-  console.log(fiveDaysFromToday);
-
   const [feedbackModalOpen, setFeedbackModalOpen] = useState(false);
   const [verifyModalOpen, setVerifyModalOpen] = useState(false);
   const [updateModalOpen, setUpdateModalOpen] = useState(false);
+  const [updateDocumentModalOpen, setUpdateDocumentModalOpen] = useState(false);
   const [verifyId, setVerifyId] = useState(null);
   const [verifyTo, setVerifyTo] = useState(null);
   const [verifiedToValidation, setVerifiedToValidation] = useState(null);
+
+  //   - 0:  Id x2
+  // - 1:  DriverLicense x2
+  // - 2 : VehicleRegistration x2
+  // - 3 : RegistrationCertificate x1
+  // - 4:  DriverPicture x1
+
+  const [imageId_1, setImageId_1] = useState();
+  const [imageId_2, setImageId_2] = useState();
+
+  const [imageDriverLicense_1, setImageDriverLicense_1] = useState();
+  const [imageDriverLicense_2, setImageDriverLicense_2] = useState();
+
+  const [imageVehicleRegistration_1, setImageVehicleRegistration_1] =
+    useState();
+  const [imageVehicleRegistration_2, setImageVehicleRegistration_2] =
+    useState();
+
+  const [imageRegistrationCertificate, setImageRegistrationCertificate] =
+    useState();
+  const [imageDriverPicture, setImageDriverPicture] = useState();
 
   const verifyDriver = async () => {
     try {
@@ -61,6 +83,36 @@ function TableItem(props) {
     setUpdateModalOpen(false);
   };
 
+  const handleUpdateDocument = async () => {
+    try {
+      const formData = new FormData();
+      formData.append('List[0].pic', imageId_1);
+      formData.append('List[0].type', 0);
+      formData.append('List[1].pic', imageId_2);
+      formData.append('List[1].type', 0);
+      formData.append('List[2].pic', imageDriverLicense_1);
+      formData.append('List[2].type', 1);
+      formData.append('List[3].pic', imageDriverLicense_2);
+      formData.append('List[3].type', 1);
+      formData.append('List[4].pic', imageVehicleRegistration_1);
+      formData.append('List[4].type', 2);
+      formData.append('List[5].pic', imageVehicleRegistration_2);
+      formData.append('List[5].type', 2);
+      formData.append('List[6].pic', imageRegistrationCertificate);
+      formData.append('List[6].type', 3);
+      formData.append('List[7].pic', imageDriverPicture);
+      formData.append('List[7].type', 4);
+
+      const result = await AuthService.updateDriverDocument(props.id, formData);
+      console.log(result);
+      if (result.status === 200) {
+        window.location.reload();
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
+
   const handleShowDetail = () => {
     setFeedbackModalOpen(true);
     fetchDriverDetail();
@@ -95,7 +147,7 @@ function TableItem(props) {
           </div>
         </td>
         <td className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
-          <div className='text-left'>{props.phone}</div>
+          <div className='text-left'>{formatPhoneNumber(props.phone)}</div>
         </td>
         <td className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
           <div className='text-left'>
@@ -142,6 +194,18 @@ function TableItem(props) {
               CHỈNH SỬA
             </button>
           )}
+        </td>
+
+        <td className='w-px px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
+          <button
+            className={`text-indigo-500 bg-white btn border-slate-200 hover:border-slate-300`}
+            onClick={(e) => {
+              e.stopPropagation();
+              setUpdateDocumentModalOpen(true);
+            }}
+          >
+            CẬP NHẬT HỒ SƠ
+          </button>
         </td>
       </tr>
       <ModalBasic
@@ -194,7 +258,7 @@ function TableItem(props) {
                 Số điện thoại
               </label>
               <input
-                value={props.phone}
+                value={formatPhoneNumber(props.phone)}
                 disabled
                 className='w-full px-2 py-1 form-input'
                 required
@@ -421,7 +485,7 @@ function TableItem(props) {
                   setVerifiedToValidation(null);
                 }}
                 className='w-full px-2 py-1 form-input'
-                min={today}
+                // min={today}
                 required
               />
             </div>
@@ -445,6 +509,140 @@ function TableItem(props) {
               onClick={handleVerify}
             >
               Cập nhật
+            </button>
+          </div>
+        </div>
+      </ModalBasic>
+
+      <ModalBasic
+        modalOpen={updateDocumentModalOpen}
+        setModalOpen={setUpdateDocumentModalOpen}
+        title='Cập nhật hồ sơ tài xế'
+      >
+        <div className='px-5 py-4'>
+          <div className='space-y-3'>
+            <h1 className='text-base font-bold'>Ảnh CCCD/CMND 🪪</h1>
+            <div>
+              <label className='block mb-1 text-sm font-medium' htmlFor='name'>
+                Ảnh 1:
+              </label>
+              <input
+                type='file'
+                onChange={(e) => {
+                  setImageId_1(e.target.files[0]);
+                }}
+                className='w-full px-2 py-1 form-input'
+              />
+            </div>
+
+            <div>
+              <label className='block mb-1 text-sm font-medium' htmlFor='name'>
+                Ảnh 2:
+              </label>
+              <input
+                type='file'
+                onChange={(e) => {
+                  setImageId_2(e.target.files[0]);
+                }}
+                className='w-full px-2 py-1 form-input'
+              />
+            </div>
+
+            <h1 className='text-base font-bold'>Ảnh bằng lái xe 🪪</h1>
+            <div>
+              <label className='block mb-1 text-sm font-medium' htmlFor='name'>
+                Ảnh 1:
+              </label>
+              <input
+                type='file'
+                onChange={(e) => {
+                  setImageDriverLicense_1(e.target.files[0]);
+                }}
+                className='w-full px-2 py-1 form-input'
+              />
+            </div>
+
+            <div>
+              <label className='block mb-1 text-sm font-medium' htmlFor='name'>
+                Ảnh 2:
+              </label>
+              <input
+                type='file'
+                onChange={(e) => {
+                  setImageDriverLicense_2(e.target.files[0]);
+                }}
+                className='w-full px-2 py-1 form-input'
+              />
+            </div>
+
+            <h1 className='text-base font-bold'>Ảnh đăng ký xe 🚗</h1>
+            <div>
+              <label className='block mb-1 text-sm font-medium' htmlFor='name'>
+                Ảnh 1:
+              </label>
+              <input
+                type='file'
+                onChange={(e) => {
+                  setImageVehicleRegistration_1(e.target.files[0]);
+                }}
+                className='w-full px-2 py-1 form-input'
+              />
+            </div>
+
+            <div>
+              <label className='block mb-1 text-sm font-medium' htmlFor='name'>
+                Ảnh 2:
+              </label>
+              <input
+                type='file'
+                onChange={(e) => {
+                  setImageVehicleRegistration_2(e.target.files[0]);
+                }}
+                className='w-full px-2 py-1 form-input'
+              />
+            </div>
+
+            <h1 className='text-base font-bold'>Ảnh đăng kiểm 🪪</h1>
+            <div>
+              <input
+                type='file'
+                onChange={(e) => {
+                  setImageRegistrationCertificate(e.target.files[0]);
+                }}
+                className='w-full px-2 py-1 form-input'
+              />
+            </div>
+
+            <h1 className='text-base font-bold'>Ảnh tài xế 🧔</h1>
+            <div>
+              <input
+                type='file'
+                onChange={(e) => {
+                  setImageDriverPicture(e.target.files[0]);
+                }}
+                className='w-full px-2 py-1 form-input'
+              />
+            </div>
+          </div>
+          <p className='mt-2 text-red-500 ml'>{verifiedToValidation}</p>
+        </div>
+
+        <div className='px-5 py-4 border-t border-slate-200'>
+          <div className='flex flex-wrap justify-end space-x-2'>
+            <button
+              className='btn-sm border-slate-200 hover:border-slate-300 text-slate-600'
+              onClick={(e) => {
+                e.stopPropagation();
+                setUpdateDocumentModalOpen(false);
+              }}
+            >
+              Huỷ
+            </button>
+            <button
+              className='text-white bg-indigo-500 btn-sm hover:bg-indigo-600'
+              onClick={handleUpdateDocument}
+            >
+              Cập nhậtt
             </button>
           </div>
         </div>

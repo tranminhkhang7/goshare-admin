@@ -10,7 +10,7 @@ function Table({ selectedItems, setTransactionPanelOpen, searchText }) {
 
   const getDriversList = async () => {
     try {
-      const result = await AuthService.getDriversList();
+      const result = await AuthService.getUsersList();
       if (result.status === 200) {
         console.log(result.data.items);
         setList(result.data.items);
@@ -75,53 +75,35 @@ function Table({ selectedItems, setTransactionPanelOpen, searchText }) {
               <thead className='text-xs font-semibold uppercase border-t border-b text-slate-500 border-slate-200'>
                 <tr>
                   <th className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
-                    <div className='font-semibold text-left'>Tên tài xế</div>
+                    <div className='font-semibold text-left'>Tài khoản</div>
+                  </th>
+                  <th className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
+                    <div className='font-semibold text-left'>Tên</div>
                   </th>
                   <th className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
                     <div className='font-semibold text-left'>Số điện thoại</div>
                   </th>
                   <th className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
-                    <div className='font-semibold text-left'>Trạng thái</div>
-                  </th>
-
-                  <th className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
-                    <div className='font-semibold text-right'>
+                    <div className='font-semibold text-left'>
                       Thời gian đăng ký
                     </div>
                   </th>
                   <th className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
-                    <div className='font-semibold text-left'>Xác thực</div>
+                    <div className='font-semibold text-left'>
+                     Giới tính
+                    </div>
                   </th>
                   <th className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
-                    <div className='font-semibold text-left'>Cập nhật hồ sơ</div>
+                    <div className='font-semibold text-left'>
+                     Vô hiệu hoá
+                    </div>
                   </th>
                 </tr>
               </thead>
               {/* Table body */}
               <tbody className='text-sm border-b divide-y divide-slate-200 border-slate-200'>
-                {filteredList.map((transaction) => {
-                  return (
-                    <TableItem
-                      id={transaction.id}
-                      name={transaction.name}
-                      gender={transaction.gender}
-                      birthday={transaction.birth}
-                      avatarUrl={transaction.avatarUrl}
-                      phone={transaction.phone}
-                      isverify={transaction.isverify}
-                      createTime={transaction.createTime}
-                      updatedTime={transaction.updatedTime}
-                      disabledReason={transaction.disabledReason}
-                      car={transaction.car}
-                      verifyTo={transaction.verifyTo}
-                      // date={transaction.date}
-                      // status={transaction.status}
-                      // amount={transaction.amount}
-                      // handleClick={handleClick}
-                      // isChecked={isCheck.includes(transaction.id)}
-                      // setTransactionPanelOpen={setTransactionPanelOpen}
-                    />
-                  );
+                {filteredList.map((user) => {
+                  return <TableItem key={user.id} {...user} />;
                 })}
               </tbody>
             </table>

@@ -6,7 +6,7 @@ import Table from './components/Table';
 import Sidebar from '../../partials/Sidebar';
 // import Sidebar from '../../partials/SidebarOriginal';
 
-function DriverList() {
+function UserList() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [selectedItems, setSelectedItems] = useState([]);
   const [transactionPanelOpen, setTransactionPanelOpen] = useState(true);
@@ -36,7 +36,7 @@ function DriverList() {
                 {/* Left: Title */}
                 <div className='mb-4'>
                   <h1 className='text-2xl font-bold md:text-3xl text-slate-800'>
-                    Duyệt hồ sơ tài xế 👨‍💼
+                    Quản lý người dùng 👨‍👩‍👧‍👦
                   </h1>
                 </div>
 
@@ -44,13 +44,39 @@ function DriverList() {
                 <div className='grid justify-start grid-flow-col gap-2 sm:auto-cols-max sm:justify-end'>
                   {/* Search form */}
                   <div className='hidden sm:block'>
-                    <SearchForm
+                    {/* <SearchForm
                       onSearchChange={(value) => {
                         setSearchText(value);
                       }}
-                    />
+                    /> */}
                   </div>
                 </div>
+              </div>
+
+              {/* Filters */}
+              <div className='mb-5'>
+                <ul className='flex flex-wrap -m-1'>
+                  <li className='m-1'>
+                    <button className='inline-flex items-center justify-center px-3 py-1 text-sm font-medium leading-5 duration-150 ease-in-out bg-white border rounded-full shadow-sm border-slate-200 hover:border-slate-300 text-slate-500'>
+                      Tất cả
+                    </button>
+                  </li>
+                  <li className='m-1'>
+                    <button className='inline-flex items-center justify-center px-3 py-1 text-sm font-medium leading-5 text-white duration-150 ease-in-out bg-indigo-500 border border-transparent rounded-full shadow-sm'>
+                      Người bảo hộ
+                    </button>
+                  </li>
+                  <li className='m-1'>
+                    <button className='inline-flex items-center justify-center px-3 py-1 text-sm font-medium leading-5 duration-150 ease-in-out bg-white border rounded-full shadow-sm border-slate-200 hover:border-slate-300 text-slate-500'>
+                      Người phụ thuộc
+                    </button>
+                  </li>
+                  <li className='m-1'>
+                    <button className='inline-flex items-center justify-center px-3 py-1 text-sm font-medium leading-5 duration-150 ease-in-out bg-white border rounded-full shadow-sm border-slate-200 hover:border-slate-300 text-slate-500'>
+                      Tài xế
+                    </button>
+                  </li>
+                </ul>
               </div>
 
               {/* Table */}
@@ -72,4 +98,4 @@ function DriverList() {
   );
 }
 
-export default DriverList;
+export default UserList;
