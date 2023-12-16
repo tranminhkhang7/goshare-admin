@@ -28,31 +28,9 @@ axiosInstance.interceptors.request.use(
   }
 );
 
-const axiosInstanceMultipart = axios.create({
-  headers: {
-    'Content-Type': 'multipart/form-data',
-  },
-});
-
-axiosInstanceMultipart.interceptors.request.use(
-  (config) => {
-    const accessToken = getLocalToken();
-
-    if (accessToken) {
-      config.headers.Authorization = `Bearer ${accessToken}`;
-    }
-
-    return config;
-  },
-  (error) => {
-    return Promise.reject(error);
-  }
-);
-
 class AuthService {
   constructor() {
     this.api = axiosInstance;
-    this.apiMultipart = axiosInstanceMultipart;
   }
 
   login(payload) {
@@ -60,7 +38,7 @@ class AuthService {
   }
 
   getDriversList() {
-    return this.api.get(`${API_BASE_URL}/user/drivers`);
+    return this.api.get(`${API_BASE_URL}/user/drivers?pageSize=500`);
   }
 
   verifyDriver(payload) {
@@ -72,7 +50,7 @@ class AuthService {
   }
 
   getTripsList() {
-    return this.api.get(`${API_BASE_URL}/trip`);
+    return this.api.get(`${API_BASE_URL}/trip?pageSize=500`);
   }
 
   cancelTrip(tripId) {
@@ -80,7 +58,7 @@ class AuthService {
   }
 
   getUsersList() {
-    return this.api.get(`${API_BASE_URL}/user`);
+    return this.api.get(`${API_BASE_URL}/user?pageSize=500`);
   }
 
   disableUser(userId, payload) {
@@ -88,7 +66,7 @@ class AuthService {
   }
 
   updateDriverDocument(driverId, payload) {
-    return this.apiMultipart.put(
+    return this.api.put(
       `${API_BASE_URL}/driver/documents/${driverId}`,
       payload
     );

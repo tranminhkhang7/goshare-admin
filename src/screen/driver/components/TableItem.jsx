@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import ModalBasic from '../../../components/ModalBasic';
 import AuthService from '../../../services/AuthService';
 import { formatPhoneNumber } from '../../../utils/Utils';
+import axios from 'axios';
 
 function TableItem(props) {
   var today = new Date();
@@ -83,117 +84,33 @@ function TableItem(props) {
   };
 
   const handleUpdateDocument = async () => {
-    // const d1 = new FormData();
-    // d1.append('file', imageId_1);
-    // const d2 = new FormData();
-    // d2.append('file', imageId_2);
-    // const d3 = new FormData();
-    // d3.append('file', imageDriverLicense_1);
-    // const d4 = new FormData();
-    // d4.append('file', imageDriverLicense_2);
-    // const d5 = new FormData();
-    // d5.append('file', imageVehicleRegistration_1);
-    // const d6 = new FormData();
-    // d6.append('file', imageVehicleRegistration_2);
-    // const d7 = new FormData();
-    // d7.append('file', imageRegistrationCertificate);
-    // const d8 = new FormData();
-    // d8.append('file', imageDriverPicture);
-
-    console.log(imageId_1);
-
-    var List = [];
-    var object = {
-      pic: imageId_1,
-      type: 0,
-    };
-    List.push(object);
-    object = {
-      pic: imageId_1,
-      type: 0,
-    };
-    List.push(object);
-    object = {
-      pic: imageId_1,
-      type: 1,
-    };
-    List.push(object);
-    object = {
-      pic: imageId_1,
-      type: 1,
-    };
-    List.push(object);
-    object = {
-      pic: imageId_1,
-      type: 2,
-    };
-    List.push(object);
-    object = {
-      pic: imageId_1,
-      type: 2,
-    };
-    List.push(object);
-    object = {
-      pic: imageId_1,
-      type: 3,
-    };
-    List.push(object);
-    object = {
-      pic: imageId_1,
-      type: 4,
-    };
-    List.push(object);
-
-    // var object = {
-    //   pic: d2,
-    //   type: 0,
-    // };
-    // List.push(object);
-    // var object = {
-    //   pic: d3,
-    //   type: 1,
-    // };
-    // List.push(object);
-    // var object = {
-    //   pic: d4,
-    //   type: 1,
-    // };
-    // List.push(object);
-    // var object = {
-    //   pic: d5,
-    //   type: 2,
-    // };
-    // List.push(object);
-    // var object = {
-    //   pic: d6,
-    //   type: 2,
-    // };
-    // List.push(object);
-    // var object = {
-    //   pic: d7,
-    //   type: 3,
-    // };
-    // List.push(object);
-    // var object = {
-    //   pic: d8,
-    //   type: 4,
-    // };
-    // List.push(object);
-
     try {
-      const payload = {
-        List: List,
-      };
-      const result = await AuthService.updateDriverDocument(props.id, payload);
-      console.log(result.data);
+      const formData = new FormData();
+      formData.append('List[0].pic', imageId_1);
+      formData.append('List[0].type', 0);
+      formData.append('List[1].pic', imageId_2);
+      formData.append('List[1].type', 0);
+      formData.append('List[2].pic', imageDriverLicense_1);
+      formData.append('List[2].type', 1);
+      formData.append('List[3].pic', imageDriverLicense_2);
+      formData.append('List[3].type', 1);
+      formData.append('List[4].pic', imageVehicleRegistration_1);
+      formData.append('List[4].type', 2);
+      formData.append('List[5].pic', imageVehicleRegistration_2);
+      formData.append('List[5].type', 2);
+      formData.append('List[6].pic', imageRegistrationCertificate);
+      formData.append('List[6].type', 3);
+      formData.append('List[7].pic', imageDriverPicture);
+      formData.append('List[7].type', 4);
+
+      const result = await AuthService.updateDriverDocument(props.id, formData);
+      console.log(result);
       if (result.status === 200) {
         window.location.reload();
       }
-      // if (result.status === 200) {
-      //   console.log(result.data.items);
-      //   setList(result.data.items);
-      // }
-    } catch {}
+    } catch (error) {
+      console.error('Error:', error);
+    }
   };
 
   const handleShowDetail = () => {
@@ -612,14 +529,6 @@ function TableItem(props) {
               <input
                 type='file'
                 onChange={(e) => {
-                  // const file = e.target.files[0];
-                  // const reader = new FileReader();
-                  // reader.onload = (event) => {
-                  //   const binaryData = event.target.result;
-                  //   setImageId_1(binaryData);
-                  // };
-                  // reader.readAsArrayBuffer(file);
-
                   setImageId_1(e.target.files[0]);
                 }}
                 className='w-full px-2 py-1 form-input'
@@ -647,13 +556,6 @@ function TableItem(props) {
               <input
                 type='file'
                 onChange={(e) => {
-                  // const file = e.target.files[0];
-                  // const reader = new FileReader();
-                  // reader.onload = (event) => {
-                  //   const binaryData = event.target.result;
-                  //   setImageDriverLicense_1(binaryData);
-                  // };
-                  // reader.readAsArrayBuffer(file);
                   setImageDriverLicense_1(e.target.files[0]);
                 }}
                 className='w-full px-2 py-1 form-input'
