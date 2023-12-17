@@ -74,6 +74,8 @@ import AdminRoute from './routes/AdminRoute';
 import DriverList from './screen/driver/DriverList';
 import TripList from './screen/trip/TripList';
 import UserList from './screen/all-user/UserList';
+import Fee from './screen/fee/Fee';
+import Settings from './screen/settings/Settings/Settings';
 
 function App() {
   const location = useLocation();
@@ -121,6 +123,24 @@ function App() {
           element={
             <AdminRoute>
               <UserList />
+            </AdminRoute>
+          }
+        />
+
+        <Route
+          path='/fee'
+          element={
+            <AdminRoute>
+              <Fee />
+            </AdminRoute>
+          }
+        />
+
+        <Route
+          path='/settings'
+          element={
+            <AdminRoute>
+              <Settings />
             </AdminRoute>
           }
         />
