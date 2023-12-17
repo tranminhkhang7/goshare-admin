@@ -124,7 +124,7 @@ function TableItem(props) {
         </td>
 
         <td className='w-px px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
-          {props.status === 1 ? (
+          {props.status === 1 || props.status === 2 ? (
             <button
               className={`text-white bg-indigo-500 btn border-slate-200 hover:border-slate-300`}
               onClick={(e) => {

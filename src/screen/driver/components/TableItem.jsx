@@ -3,8 +3,11 @@ import ModalBasic from '../../../components/ModalBasic';
 import AuthService from '../../../services/AuthService';
 import { formatPhoneNumber } from '../../../utils/Utils';
 import axios from 'axios';
+import ModalBlank from '../../../components/ModalBlank';
 
 function TableItem(props) {
+  const [warningModal, setWarningModal] = useState(true);
+
   var today = new Date();
   var dd = String(today.getDate()).padStart(2, '0');
   var mm = String(today.getMonth() + 1).padStart(2, '0');
@@ -202,6 +205,7 @@ function TableItem(props) {
             onClick={(e) => {
               e.stopPropagation();
               setUpdateDocumentModalOpen(true);
+              // setWarningModal(true);
             }}
           >
             CẬP NHẬT HỒ SƠ
@@ -513,6 +517,14 @@ function TableItem(props) {
           </div>
         </div>
       </ModalBasic>
+
+      <ModalBlank
+        modalOpen={warningModal}
+        setModalOpen={setWarningModal}
+        title='Thông tin tài xế chi tiết'
+      >
+        <div>hehe</div>
+      </ModalBlank>
 
       <ModalBasic
         modalOpen={updateDocumentModalOpen}

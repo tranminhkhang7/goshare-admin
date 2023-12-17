@@ -71,6 +71,26 @@ class AuthService {
       payload
     );
   }
+
+  getFee() {
+    return this.api.get(`${API_BASE_URL}/fee`);
+  }
+
+  updateBaseFee(id, payload) {
+    return this.api.put(`${API_BASE_URL}/fee/${id}`, payload);
+  }
+
+  updateRangeFee(id, payload) {
+    return this.api.put(`${API_BASE_URL}/fee/policy/${id}`, payload);
+  }
+
+  getSettings() {
+    return this.api.get(`${API_BASE_URL}/setting`);
+  }
+
+  updateSettings(id, payload) {
+    return this.api.put(`${API_BASE_URL}/setting/${id}`, payload);
+  }
 }
 
 export default new AuthService();

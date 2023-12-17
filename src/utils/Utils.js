@@ -2,8 +2,8 @@ import resolveConfig from 'tailwindcss/resolveConfig';
 
 export const tailwindConfig = () => {
   // Tailwind config
-  return resolveConfig('./src/css/tailwind.config.js')
-}
+  return resolveConfig('./src/css/tailwind.config.js');
+};
 
 export const hexToRGB = (h) => {
   let r = 0;
@@ -21,20 +21,22 @@ export const hexToRGB = (h) => {
   return `${+r},${+g},${+b}`;
 };
 
-export const formatValue = (value) => Intl.NumberFormat('en-US', {
-  style: 'currency',
-  currency: 'USD',
-  maximumSignificantDigits: 3,
-  notation: 'compact',
-}).format(value);
+export const formatValue = (value) =>
+  Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    maximumSignificantDigits: 3,
+    notation: 'compact',
+  }).format(value);
 
-export const formatThousands = (value) => Intl.NumberFormat('en-US', {
-  maximumSignificantDigits: 3,
-  notation: 'compact',
-}).format(value);
+export const formatThousands = (value) =>
+  Intl.NumberFormat('en-US', {
+    maximumSignificantDigits: 3,
+    notation: 'compact',
+  }).format(value);
 
 export const formatPhoneNumber = (phoneNumber) => {
-  if (!phoneNumber) return null;
+  if (!phoneNumber) return '';
   const formattedPhoneNumber = phoneNumber.replace('+84', '0');
 
   if (formattedPhoneNumber.length === 10) {
@@ -48,8 +50,9 @@ export const formatPhoneNumber = (phoneNumber) => {
 };
 
 export const formatDate = (inputDate) => {
+  if (!inputDate) return '';
   const dateObject = new Date(inputDate);
-  
+
   const day = dateObject.getDate().toString().padStart(2, '0');
   const month = (dateObject.getMonth() + 1).toString().padStart(2, '0');
   const year = dateObject.getFullYear().toString();
@@ -60,8 +63,9 @@ export const formatDate = (inputDate) => {
 };
 
 export const formatDateTime = (inputDate) => {
+  if (!inputDate) return '';
   const dateObject = new Date(inputDate);
-  
+
   const day = dateObject.getDate().toString().padStart(2, '0');
   const month = (dateObject.getMonth() + 1).toString().padStart(2, '0');
   const year = dateObject.getFullYear().toString();
@@ -74,3 +78,7 @@ export const formatDateTime = (inputDate) => {
 
   return formattedDateTime;
 };
+
+export function formatCurrency(value) {
+  return value?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+}
