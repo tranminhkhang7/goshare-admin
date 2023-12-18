@@ -26,24 +26,24 @@ function Analytics() {
       <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
       {/* Content area */}
-      <div className="relative flex flex-col flex-1 overflow-y-auto overflow-x-hidden">
+      <div className="relative flex flex-col flex-1 overflow-x-hidden overflow-y-auto">
 
         {/*  Site header */}
         <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
         <main>
-          <div className="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
+          <div className="w-full px-4 py-8 mx-auto sm:px-6 lg:px-8 max-w-9xl">
 
             {/* Page header */}
-            <div className="sm:flex sm:justify-between sm:items-center mb-8">
+            <div className="mb-8 sm:flex sm:justify-between sm:items-center">
             
               {/* Left: Title */}
               <div className="mb-4 sm:mb-0">
-                <h1 className="text-2xl md:text-3xl text-slate-800 font-bold">Analytics ✨</h1>
+                <h1 className="text-2xl font-bold md:text-3xl text-slate-800">Analytics ✨</h1>
               </div>
           
               {/* Right: Actions */}
-              <div className="grid grid-flow-col sm:auto-cols-max justify-start sm:justify-end gap-2">
+              <div className="grid justify-start grid-flow-col gap-2 sm:auto-cols-max sm:justify-end">
                   
                 {/* Datepicker built with flatpickr */}
                 <Datepicker align="right" />

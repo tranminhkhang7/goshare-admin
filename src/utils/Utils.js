@@ -62,6 +62,19 @@ export const formatDate = (inputDate) => {
   return formattedDate;
 };
 
+export const formatDateWithFirstMonth = (inputDate) => {
+  if (!inputDate) return '';
+  const dateObject = new Date(inputDate);
+
+  const day = dateObject.getDate().toString().padStart(2, '0');
+  const month = (dateObject.getMonth() + 1).toString().padStart(2, '0');
+  const year = dateObject.getFullYear().toString();
+
+  const formattedDate = `${month}-${day}-${year}`;
+
+  return formattedDate;
+};
+
 export const formatDateTime = (inputDate) => {
   if (!inputDate) return '';
   const dateObject = new Date(inputDate);

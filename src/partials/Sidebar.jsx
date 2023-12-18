@@ -145,6 +145,49 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
               </span>
             </h3>
             <ul className='mt-3'>
+              {/* ANALYTICS */}
+              <li
+                className={`px-3 py-2 rounded-sm mb-0.5 last:mb-0 ${
+                  pathname.includes('analytics') && 'bg-slate-900'
+                }`}
+              >
+                <NavLink
+                  end
+                  to='/analytics'
+                  className={`block text-slate-200 hover:text-white truncate transition duration-150 ${
+                    pathname.includes('analytics') && 'hover:text-slate-200'
+                  }`}
+                >
+                  <div className='flex items-center justify-between'>
+                    <div className='flex items-center grow'>
+                      <svg className='w-6 h-6 shrink-0' viewBox='0 0 24 24'>
+                        <path
+                          className={`fill-current text-slate-600 ${
+                            pathname.includes('analytics') && 'text-indigo-500'
+                          }`}
+                          d='M8 1v2H3v19h18V3h-5V1h7v23H1V1z'
+                        />
+                        <path
+                          className={`fill-current text-slate-600 ${
+                            pathname.includes('analytics') && 'text-indigo-500'
+                          }`}
+                          d='M1 1h22v23H1z'
+                        />
+                        <path
+                          className={`fill-current text-slate-400 ${
+                            pathname.includes('analytics') && 'text-indigo-300'
+                          }`}
+                          d='M15 10.586L16.414 12 11 17.414 7.586 14 9 12.586l2 2zM5 0h14v4H5z'
+                        />
+                      </svg>
+                      <span className='ml-3 text-sm font-medium duration-200 lg:opacity-0 lg:sidebar-expanded:opacity-100 2xl:opacity-100'>
+                        Thống kê
+                      </span>
+                    </div>
+                  </div>
+                </NavLink>
+              </li>
+
               {/* DRIVER LIST */}
               <li
                 className={`px-3 py-2 rounded-sm mb-0.5 last:mb-0 ${
@@ -287,24 +330,21 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                       <svg className='w-6 h-6 shrink-0' viewBox='0 0 24 24'>
                         <path
                           className={`fill-current text-slate-400 ${
-                            (pathname === '/' ||
-                              pathname.includes('fee')) &&
+                            (pathname === '/' || pathname.includes('fee')) &&
                             '!text-indigo-500'
                           }`}
                           d='M12 0C5.383 0 0 5.383 0 12s5.383 12 12 12 12-5.383 12-12S18.617 0 12 0z'
                         />
                         <path
                           className={`fill-current text-slate-600 ${
-                            (pathname === '/' ||
-                              pathname.includes('fee')) &&
+                            (pathname === '/' || pathname.includes('fee')) &&
                             'text-indigo-600'
                           }`}
                           d='M12 3c-4.963 0-9 4.037-9 9s4.037 9 9 9 9-4.037 9-9-4.037-9-9-9z'
                         />
                         <path
                           className={`fill-current text-slate-400 ${
-                            (pathname === '/' ||
-                              pathname.includes('fee')) &&
+                            (pathname === '/' || pathname.includes('fee')) &&
                             'text-indigo-200'
                           }`}
                           d='M12 15c-1.654 0-3-1.346-3-3 0-.462.113-.894.3-1.285L6 6l4.714 3.301A2.973 2.973 0 0112 9c1.654 0 3 1.346 3 3s-1.346 3-3 3z'
@@ -326,7 +366,8 @@ function Sidebar({ sidebarOpen, setSidebarOpen }) {
                       <a
                         href='#0'
                         className={`block text-slate-200 hover:text-white truncate transition duration-150 ${
-                          pathname.includes('settings') && 'hover:text-slate-200'
+                          pathname.includes('settings') &&
+                          'hover:text-slate-200'
                         }`}
                         onClick={(e) => {
                           e.preventDefault();
