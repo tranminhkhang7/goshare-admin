@@ -15,7 +15,6 @@ function LineChart03({
   width,
   height
 }) {
-
   const canvas = useRef(null);
 
   useEffect(() => {
@@ -78,7 +77,7 @@ function LineChart03({
     });
     return () => chart.destroy();
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [data]);
 
   return (
     <canvas ref={canvas} width={width} height={height}></canvas>

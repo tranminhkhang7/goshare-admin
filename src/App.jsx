@@ -76,6 +76,7 @@ import TripList from './screen/trip/TripList';
 import UserList from './screen/all-user/UserList';
 import Fee from './screen/fee/Fee';
 import Settings from './screen/settings/Settings/Settings';
+import AnalyticsSystem from './screen/analytics-system/AnalyticsSystem';
 
 function App() {
   const location = useLocation();
@@ -96,6 +97,15 @@ function App() {
           element={
             <AdminRoute>
               <DriverList />
+            </AdminRoute>
+          }
+        />
+
+        <Route
+          path='/analytics'
+          element={
+            <AdminRoute>
+              <AnalyticsSystem />
             </AdminRoute>
           }
         />

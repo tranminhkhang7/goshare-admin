@@ -37,7 +37,7 @@ function TransactionsTableItem(props) {
   const fetchDriverDetail = async () => {
     try {
       const result = await AuthService.getDriverDocument(props.id);
-      console.log(result.data);
+
       setDocument(result.data);
       // if (result.status === 200) {
       //   console.log(result.data.items);

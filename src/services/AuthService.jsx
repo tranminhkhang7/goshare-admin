@@ -91,6 +91,10 @@ class AuthService {
   updateSettings(id, payload) {
     return this.api.put(`${API_BASE_URL}/setting/${id}`, payload);
   }
+
+  getAnalytics() {
+    return this.api.get(`${API_BASE_URL}/wallettransaction/system`);
+  }
 }
 
 export default new AuthService();

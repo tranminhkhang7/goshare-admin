@@ -12,7 +12,7 @@ function Table({ selectedItems, setTransactionPanelOpen, searchText }) {
     try {
       const result = await AuthService.getDriversList();
       if (result.status === 200) {
-        console.log(result.data.items);
+   
         setList(result.data.items);
       }
     } catch {}
