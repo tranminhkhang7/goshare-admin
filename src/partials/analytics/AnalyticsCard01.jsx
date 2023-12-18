@@ -288,6 +288,15 @@ function AnalyticsCard01(props) {
         </div>
       </div>
       {/* Chart built with Chart.js 3 */}
+      <h2 className='my-5 ml-5 font-semibold text-slate-800'>
+        Dao động trong{' '}
+        <span
+          className='underline cursor-pointer'
+          onClick={() => setRange(range === 7 ? 30 : 7)}
+        >
+          {range === 30 ? 'tháng' : 'tuần'}
+        </span>
+      </h2>
       <div className='grow'>
         {/* Change the height attribute to adjust the chart height */}
         <LineChart data={chartData} width={800} height={300} />

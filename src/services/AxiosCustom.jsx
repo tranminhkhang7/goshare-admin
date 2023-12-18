@@ -10,7 +10,7 @@ const getLocalToken = () => {
   const accessToken = accessTokenCookie
     ? JSON.parse(accessTokenCookie.substring('access_token='.length))
     : null;
-  console.log('ieroei', accessToken);
+
   return accessToken;
 };
 
@@ -24,7 +24,7 @@ const axiosClient = axios.create({
 
 axiosClient.interceptors.request.use((request) => {
   const accessToken = getLocalToken();
-  console.log('token', accessToken);
+
   request.headers.Authorization = `Bearer ${getLocalToken()}`;
   return request;
 });

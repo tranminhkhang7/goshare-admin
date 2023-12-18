@@ -105,7 +105,7 @@ function TransactionsTable02({ selectedItems, setTransactionPanelOpen }) {
     try {
       const result = await AuthService.getDriversList();
       if (result.status === 200) {
-        console.log(result.data.items);
+      
         setList(result.data.items);
       }
     } catch {}

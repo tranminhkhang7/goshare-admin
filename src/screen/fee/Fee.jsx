@@ -82,7 +82,7 @@ function Fee() {
   };
 
   const handleUpdateRange = async (id) => {
-    console.log(id);
+   
     if (!id) return;
     const payload = {
       price_per_km: parseFloat(range1Price),
