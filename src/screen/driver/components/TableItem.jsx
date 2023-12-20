@@ -2,8 +2,38 @@ import React, { useState } from 'react';
 import ModalBasic from '../../../components/ModalBasic';
 import AuthService from '../../../services/AuthService';
 import { formatPhoneNumber } from '../../../utils/Utils';
-import axios from 'axios';
 import ModalBlank from '../../../components/ModalBlank';
+
+const TEXT_LABELS = [
+  'Ảnh CCCD/CMND 🪪',
+  'Ảnh bằng lái xe 🪪',
+  'Ảnh đăng ký xe 🚗',
+  'Ảnh đăng kiểm 🪪',
+  'Ảnh tài xế 🧔',
+];
+
+const DocumentRow = ({ documents, start, end }) => {
+  let counter = start;
+  return (
+    <>
+      {counter <= end && (
+        <span>
+          {counter > 0 && (
+            <div className='my-4 text-lg font-bold'>{TEXT_LABELS[(counter - 1) % TEXT_LABELS.length]}</div>
+          )}
+          {[...Array(2)]?.map((_, i) => {
+            if (counter <= end) {
+              const doc = documents[counter];
+              return <img key={i} src={doc?.url} />;
+            }
+            counter++;
+            return null;
+          })}
+        </span>
+      )}
+    </>
+  );
+};
 
 function TableItem(props) {
   const [warningModal, setWarningModal] = useState(true);
@@ -382,19 +412,26 @@ function TableItem(props) {
               </div>
             )}
 
-            {document && (
+            {/* {document && (
               <div>
                 <label
                   className='block mb-1 text-sm font-medium'
                   htmlFor='email'
                 >
-                  Giấy phép
+                  Giấy tờ tài xế
                 </label>
                 {document.map((doc) => (
                   <img key={doc.id} src={doc.url} alt={`Document ${doc.id}`} />
                 ))}
               </div>
-            )}
+            )} */}
+            {document?.map((doc, i) => (
+              <DocumentRow
+                documents={document}
+                start={i * 2 + 1} // Start index for each block
+                end={i * 2 + 4} // End index for each block
+              />
+            ))}
           </div>
         </div>
 
