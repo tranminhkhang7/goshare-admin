@@ -1,5 +1,6 @@
 import axios from 'axios';
 
+const API_MOBILE_BASE_URL = `https://goshareapi.azurewebsites.net/api`;
 const API_BASE_URL = `https://goshareadmin.azurewebsites.net/api`;
 
 const getLocalToken = () => {
@@ -54,7 +55,7 @@ class AuthService {
   }
 
   cancelTrip(tripId) {
-    return this.api.post(`${API_BASE_URL}/trip/cancel/${tripId}`);
+    return this.api.post(`${API_MOBILE_BASE_URL}/trip/cancel/${tripId}`);
   }
 
   getUsersList() {
@@ -63,6 +64,10 @@ class AuthService {
 
   disableUser(userId, payload) {
     return this.api.put(`${API_BASE_URL}/user/ban/${userId}`, payload);
+  }
+
+  unbanUser(userId) {
+    return this.api.put(`${API_BASE_URL}/user/unban/${userId}`);
   }
 
   updateDriverDocument(driverId, payload) {

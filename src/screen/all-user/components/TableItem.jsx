@@ -52,15 +52,25 @@ function TableItem(props) {
     } catch {}
   };
 
-  const handleDisableUser = () => {
-    console.log(disabledReason, verifyDisabledReason);
-    if (!disabledReason) {
-      setVerifyDisabledReason(true);
-      return;
+  const unbanUser = async () => {
+    try {
+      const result = await AuthService.unbanUser(props.id);
+      if (result.status === 200) {
+        window.location.reload();
+      }
+    } catch {}
+  };
+
+  const handleChangeStatus = () => {
+    if (props.status !== 'BANNED') {
+      if (!disabledReason) {
+        setVerifyDisabledReason(true);
+        return;
+      }
+      disableUser();
+    } else {
+      unbanUser();
     }
-    disableUser();
-    // setVerifyModalOpen(false);
-    // setUpdateModalOpen(false);
   };
 
   return (
@@ -109,13 +119,17 @@ function TableItem(props) {
         <td className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
           <div className='text-left'>
             <button
-              className={`text-white bg-indigo-500 btn border-slate-200 hover:border-slate-300`}
+              className={`${
+                props.status === 'BANNED'
+                  ? 'text-white bg-indigo-500'
+                  : 'text-indigo-500 bg-white'
+              }  btn border-slate-200 hover:border-slate-300`}
               onClick={(e) => {
                 e.stopPropagation();
                 setBanModal(true);
               }}
             >
-              VÔ HIỆU HOÁ
+              {props.status === 'BANNED' ? 'KÍCH HOẠT LẠI' : 'VÔ HIỆU HOÁ'}
             </button>
           </div>
         </td>
@@ -346,25 +360,32 @@ function TableItem(props) {
       <ModalBasic
         modalOpen={banModal}
         setModalOpen={setBanModal}
-        title='Vô hiệu hoá tài khoản'
+        title={`${
+          props.status === 'BANNED'
+            ? 'Kích hoạt lại tài khoản'
+            : 'Vô hiệu hoá tài khoản'
+        } `}
       >
         <div className='px-5 py-4'>
           <div className='space-y-3'>
             <div className='font-bold'>
-              Bạn có chắc chắn muốn vô hiệu hoá tài khoản này? Nếu có vui lòng
-              điền lý do bên dưới.
+              {props.status === 'BANNED'
+                ? 'Bạn có chắc chắn muốn kích hoạt lại tài khoản này?'
+                : 'Bạn có chắc chắn muốn vô hiệu hoá tài khoản này? Nếu có vui lòng điền lý do bên dưới.'}
             </div>
-            <div>
-              <textarea
-                value={disabledReason}
-                className='w-full px-2 py-1 form-input'
-                onChange={(e) => {
-                  setDisabledReason(e.target.value);
-                  setVerifyDisabledReason(false);
-                }}
-                required
-              />
-            </div>
+            {props.status !== 'BANNED' && (
+              <div>
+                <textarea
+                  value={disabledReason}
+                  className='w-full px-2 py-1 form-input'
+                  onChange={(e) => {
+                    setDisabledReason(e.target.value);
+                    setVerifyDisabledReason(false);
+                  }}
+                  required
+                />
+              </div>
+            )}
           </div>
           {verifyDisabledReason && (
             <p className='mt-2 text-red-500 ml'>
@@ -386,9 +407,9 @@ function TableItem(props) {
             </button>
             <button
               className='text-white bg-indigo-500 btn-sm hover:bg-indigo-600'
-              onClick={handleDisableUser}
+              onClick={handleChangeStatus}
             >
-              Vô hiệu hoá
+              {props.status === 'BANNED' ? 'Kích hoạt lại' : 'Vô hiệu hoá'}
             </button>
           </div>
         </div>

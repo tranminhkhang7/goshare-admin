@@ -16,7 +16,7 @@ function AnalyticsCard11(props) {
   return (
     <div className='bg-white border rounded-sm shadow-lg col-span-full border-slate-200'>
       <header className='px-5 py-4 border-b border-slate-100'>
-        <h2 className='font-semibold text-slate-800'>Top Products</h2>
+        <h2 className='font-semibold text-slate-800'>Lịch sử giao dịch</h2>
       </header>
       <div className='p-3'>
         {/* Table */}
