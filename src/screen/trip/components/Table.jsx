@@ -22,17 +22,35 @@ function Table({ selectedItems }) {
       const result = await AuthService.getTripsList();
       if (result.status === 200) {
         const sortedList = result.data.items.sort((a, b) => {
-          if (a.status === 2 && b.status !== 2) {
-            return -1;
-          } else if (a.status !== 2 && b.status === 2) {
-            return 1;
+          const statusOrder = (status) => {
+            // Define the order for each status
+            switch (status) {
+              case 0:
+                return 1;
+              case 1:
+                return 2;
+              case 2:
+                return 3;
+              default:
+                return 4; // for other statuses
+            }
+          };
+
+          const statusComparison =
+            statusOrder(a.status) - statusOrder(b.status);
+          if (statusComparison !== 0) {
+            return statusComparison;
           }
+
+          // If status is the same, sort by startTime
           return new Date(a.startTime) - new Date(b.startTime);
         });
 
         setList(sortedList);
       }
-    } catch {}
+    } catch (error) {
+      console.error('Error fetching or sorting the list:', error);
+    }
   };
 
   useEffect(() => {
@@ -95,12 +113,7 @@ function Table({ selectedItems }) {
               {/* Table body */}
               <tbody className='text-sm border-b divide-y divide-slate-200 border-slate-200'>
                 {list.map((trip) => {
-                  return (
-                    <TableItem
-                      key={trip.id}
-                      {...trip}            
-                    />
-                  );
+                  return <TableItem key={trip.id} {...trip} />;
                 })}
               </tbody>
             </table>

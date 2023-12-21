@@ -100,6 +100,10 @@ class AuthService {
   getAnalytics() {
     return this.api.get(`${API_BASE_URL}/wallettransaction/system`);
   }
+
+  updateBalance(id, payload) {
+    return this.api.put(`${API_BASE_URL}/wallet/${id}`, payload);
+  }
 }
 
 export default new AuthService();

@@ -12,7 +12,6 @@ function Table({ selectedItems, setTransactionPanelOpen, searchText }) {
     try {
       const result = await AuthService.getUsersList();
       if (result.status === 200) {
-   
         setList(result.data.items);
       }
     } catch {}
@@ -24,21 +23,22 @@ function Table({ selectedItems, setTransactionPanelOpen, searchText }) {
   }, []);
 
   useEffect(() => {
-    if (searchText === null || searchText.length === 0) {
+    if (
+      searchText === null ||
+      searchText.length === 0 ||
+      searchText === 'ALL'
+    ) {
       setFilteredList(list);
+      return;
     }
     setFilteredList(
       list.filter((item) => {
-        const lowerSearchText = searchText.toLowerCase();
-        const lowerName = item.name.toLowerCase();
-        const lowerPhone = item.phone.toLowerCase();
-        const lowerId = item.id.toLowerCase();
+        var role = ''; //driver = 0, dependent = 1, guardian = 2
+        if (item?.isdriver) role = 'DRIVER';
+        else if (item?.guardian) role = 'DEPENDENT';
+        else role = 'GUARDIAN';
 
-        return (
-          lowerName.includes(lowerSearchText) ||
-          lowerPhone.includes(lowerSearchText) ||
-          lowerId.includes(lowerSearchText)
-        );
+        return searchText.includes(role);
       })
     );
   }, [searchText, list]);
@@ -89,13 +89,17 @@ function Table({ selectedItems, setTransactionPanelOpen, searchText }) {
                     </div>
                   </th>
                   <th className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
-                    <div className='font-semibold text-left'>
-                     Giới tính
-                    </div>
+                    <div className='font-semibold text-left'>Giới tính</div>
+                  </th>
+                  <th className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
+                    <div className='font-semibold text-left'>Số dư ví</div>
+                  </th>
+                  <th className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
+                    <div className='font-semibold text-left'>Vô hiệu hoá</div>
                   </th>
                   <th className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
                     <div className='font-semibold text-left'>
-                     Vô hiệu hoá
+                      Cập nhật số dư
                     </div>
                   </th>
                 </tr>

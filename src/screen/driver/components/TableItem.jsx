@@ -19,7 +19,9 @@ const DocumentRow = ({ documents, start, end }) => {
       {counter <= end && (
         <span>
           {counter > 0 && (
-            <div className='my-4 text-lg font-bold'>{TEXT_LABELS[(counter - 1) % TEXT_LABELS.length]}</div>
+            <div className='my-4 text-lg font-bold'>
+              {TEXT_LABELS[(counter - 1) % TEXT_LABELS.length]}
+            </div>
           )}
           {[...Array(2)]?.map((_, i) => {
             if (counter <= end) {
@@ -412,26 +414,41 @@ function TableItem(props) {
               </div>
             )}
 
-            {/* {document && (
-              <div>
-                <label
-                  className='block mb-1 text-sm font-medium'
-                  htmlFor='email'
-                >
-                  Giấy tờ tài xế
-                </label>
-                {document.map((doc) => (
-                  <img key={doc.id} src={doc.url} alt={`Document ${doc.id}`} />
-                ))}
-              </div>
-            )} */}
-            {document?.map((doc, i) => (
+            {/* {document?.map((doc, i) => (
               <DocumentRow
                 documents={document}
                 start={i * 2 + 1} // Start index for each block
                 end={i * 2 + 4} // End index for each block
               />
-            ))}
+            ))} */}
+
+            {document && (
+              <div>
+                <label
+                  className='block mb-1 text-sm font-medium'
+                  htmlFor='email'
+                >
+                  Giấy phép
+                </label>
+                <div className='my-5 text-base font-bold'>Ảnh CCCD/CMND 🪪</div>
+                <img src={document[0]?.url} />
+                <img src={document[1]?.url} />
+                <div className='my-5 text-base font-bold'>
+                  Ảnh bằng lái xe 🪪
+                </div>
+                <img src={document[2]?.url} />
+                <img src={document[3]?.url} />
+                <div className='my-5 text-base font-bold'>
+                  Ảnh đăng ký xe 🚗
+                </div>
+                <img src={document[4]?.url} />
+                <img src={document[5]?.url} />
+                <div className='my-5 text-base font-bold'>Ảnh đăng kiểm 🪪</div>
+                <img src={document[6]?.url} />
+                <div className='my-5 text-base font-bold'>Ảnh tài xế 🧔</div>
+                <img src={document[7]?.url} />
+              </div>
+            )}
           </div>
         </div>
 
@@ -691,7 +708,7 @@ function TableItem(props) {
               className='text-white bg-indigo-500 btn-sm hover:bg-indigo-600'
               onClick={handleUpdateDocument}
             >
-              Cập nhậtt
+              Cập nhật
             </button>
           </div>
         </div>

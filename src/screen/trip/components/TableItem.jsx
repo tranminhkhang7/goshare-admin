@@ -567,180 +567,28 @@ function TableItem(props) {
                 required
               />
             </div>
-
-            {/* 
-            <div>
-              <label className='block mb-1 text-sm font-medium' htmlFor='name'>
-                Giới tính
-              </label>
-              <div
-                className={`text-xs inline-flex font-medium rounded-full text-center px-2.5 py-1 ${
-                  props.gender === 1
-                    ? 'bg-emerald-100 text-emerald-600'
-                    : 'bg-amber-100 text-amber-500'
-                } `}
-              >
-                {props.gender === 1 ? 'Nam' : 'Nữ'}
-              </div>
-            </div>
-
-            <div>
-              <label className='block mb-1 text-sm font-medium' htmlFor='name'>
-                Ngày tháng năm sinh
-              </label>
-              <input
-                value={props.createTime.substring(0, 10)}
-                disabled
-                className='w-full px-2 py-1 form-input'
-                required
-              />
-            </div>
-
-            <div>
-              <label className='block mb-1 text-sm font-medium' htmlFor='email'>
-                Số điện thoại
-              </label>
-              <input
-                value={props.phone}
-                disabled
-                className='w-full px-2 py-1 form-input'
-                required
-              />
-            </div>
-
-            <div>
-              <label
-                className='block mb-1 text-sm font-medium'
-                htmlFor='feedback'
-              >
-                Trạng thái
-              </label>
-              <div
-                className={`text-xs inline-flex font-medium rounded-full text-center px-2.5 py-1 ${
-                  props.verifyTo > today
-                    ? 'bg-emerald-100 text-emerald-600'
-                    : 'bg-rose-100 text-rose-500'
-                } `}
-              >
-                {props.verifyTo > today ? 'Đã xác thực' : 'Chưa xác thực'}
-              </div>
-            </div>
-
-            <div>
-              <label className='block mb-1 text-sm font-medium' htmlFor='email'>
-                Thời gian đăng ký
-              </label>
-              <input
-                value={
-                  props.createTime.substring(0, 10) +
-                  ' ' +
-                  props.createTime.substring(11, 19)
-                }
-                disabled
-                className='w-full px-2 py-1 form-input'
-                required
-              />
-            </div>
-
-            <div>
-              <label className='block mb-1 text-sm font-medium' htmlFor='email'>
-                Thời gian cập nhật gần nhất
-              </label>
-              <input
-                value={
-                  props.updatedTime.substring(0, 10) +
-                  ' ' +
-                  props.updatedTime.substring(11, 19)
-                }
-                disabled
-                className='w-full px-2 py-1 form-input'
-                required
-              />
-            </div>
-
-            {props.disabledReason && (
+            {props?.tripImages[0]?.imageUrl && (
               <div>
                 <label
                   className='block mb-1 text-sm font-medium'
-                  htmlFor='email'
+                  htmlFor='name'
                 >
-                  Lý do bị khóa
+                  Ảnh đón khách
                 </label>
-                <textarea
-                  value={props.disabledReason}
-                  disabled
-                  className='w-full px-2 py-1 form-input'
-                  required
-                />
+                <img src={props?.tripImages[0]?.imageUrl} />
               </div>
             )}
-
-            <div>
-              <label className='block mb-1 text-sm font-medium' htmlFor='email'>
-                Biển số xe
-              </label>
-              <input
-                value={props.car.licensePlate}
-                disabled
-                className='w-full px-2 py-1 form-input'
-                required
-              />
-            </div>
-
-            <div>
-              <label className='block mb-1 text-sm font-medium' htmlFor='email'>
-                Hãng xe
-              </label>
-              <input
-                value={props.car.make}
-                disabled
-                className='w-full px-2 py-1 form-input'
-                required
-              />
-            </div>
-
-            <div>
-              <label className='block mb-1 text-sm font-medium' htmlFor='email'>
-                Dòng xe
-              </label>
-              <input
-                value={props.car.model}
-                disabled
-                className='w-full px-2 py-1 form-input'
-                required
-              />
-            </div>
-
-            {props.verifyTo > today && (
+            {props?.tripImages[1]?.imageUrl && (
               <div>
                 <label
                   className='block mb-1 text-sm font-medium'
-                  htmlFor='email'
+                  htmlFor='name'
                 >
-                  Còn hạn đến ngày
+                  Ảnh trả khách
                 </label>
-                <input
-                  value={props.verifyTo.substring(0, 10)}
-                  disabled
-                  className='w-full px-2 py-1 form-input'
-                  required
-                />
+                <img src={props?.tripImages[1]?.imageUrl} />
               </div>
             )}
-
-            {document && (
-              <div>
-                <label
-                  className='block mb-1 text-sm font-medium'
-                  htmlFor='email'
-                >
-                  Giấy phép
-                </label>
-                {document.map((doc) => (
-                  <img key={doc.id} src={doc.url} alt={`Document ${doc.id}`} />
-                ))}
-              </div>
-            )} */}
           </div>
         </div>
 

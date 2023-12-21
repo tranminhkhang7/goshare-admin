@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import ModalBasic from '../../../components/ModalBasic';
 import AuthService from '../../../services/AuthService';
 import {
+  formatCurrency,
   formatDate,
   formatDateTime,
   formatPhoneNumber,
@@ -20,8 +21,8 @@ const statusStyles = {
 };
 
 const genderMapping = {
-  0: 'NAM',
-  1: 'NỮ',
+  0: 'NỮ',
+  1: 'NAM',
 };
 
 const genderStyles = {
@@ -30,12 +31,15 @@ const genderStyles = {
 };
 
 function TableItem(props) {
+  const [updateBalanceModalOpen, setUpdateBalanceModalOpen] = useState(false);
   const [detailModal, setDetailModal] = useState(false);
   const [banModal, setBanModal] = useState(false);
+  const [unbanModal, setUnbanModal] = useState(false);
+  const [updateBalance, setUpdateBalance] = useState(props?.balance || 0);
   const [disabledReason, setDisabledReason] = useState('');
   const [verifyDisabledReason, setVerifyDisabledReason] = useState(null);
 
-  var role = '';
+  var role = ''; //driver = 0, dependent = 1, guardian = 2
   if (props?.isdriver) role = 0;
   else if (props?.guardian) role = 1;
   else role = 2;
@@ -71,6 +75,18 @@ function TableItem(props) {
     } else {
       unbanUser();
     }
+  };
+
+  const handleUpdateBlance = async () => {
+    try {
+      const payload = {
+        balance: Number(updateBalance),
+      };
+      const result = await AuthService.updateBalance(props.id, payload);
+      if (result.status === 200) {
+        window.location.reload();
+      }
+    } catch {}
   };
 
   return (
@@ -118,9 +134,15 @@ function TableItem(props) {
 
         <td className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
           <div className='text-left'>
+            {role === 1 ? '-' : formatCurrency(props?.balance) + 'đ'}
+          </div>
+        </td>
+
+        <td className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
+          <div className='text-left'>
             <button
               className={`${
-                props.status === 'BANNED'
+                props?.status === 'BANNED' || props?.status === 'WARNED'
                   ? 'text-white bg-indigo-500'
                   : 'text-indigo-500 bg-white'
               }  btn border-slate-200 hover:border-slate-300`}
@@ -129,8 +151,28 @@ function TableItem(props) {
                 setBanModal(true);
               }}
             >
-              {props.status === 'BANNED' ? 'KÍCH HOẠT LẠI' : 'VÔ HIỆU HOÁ'}
+              {props?.status === 'BANNED' || props?.status === 'WARNED'
+                ? 'KÍCH HOẠT LẠI'
+                : 'VÔ HIỆU HOÁ'}
             </button>
+          </div>
+        </td>
+
+        <td className='px-2 py-3 first:pl-5 last:pr-5 whitespace-nowrap'>
+          <div className='text-left'>
+            {role === 1 ? (
+              '-'
+            ) : (
+              <button
+                className={`text-indigo-500 bg-white btn border-slate-200 hover:border-slate-300`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setUpdateBalanceModalOpen(true);
+                }}
+              >
+                CẬP NHẬT SỐ DƯ
+              </button>
+            )}
           </div>
         </td>
       </tr>
@@ -361,7 +403,7 @@ function TableItem(props) {
         modalOpen={banModal}
         setModalOpen={setBanModal}
         title={`${
-          props.status === 'BANNED'
+          props?.status === 'BANNED' || props?.status === 'WARNED'
             ? 'Kích hoạt lại tài khoản'
             : 'Vô hiệu hoá tài khoản'
         } `}
@@ -369,7 +411,7 @@ function TableItem(props) {
         <div className='px-5 py-4'>
           <div className='space-y-3'>
             <div className='font-bold'>
-              {props.status === 'BANNED'
+              {props?.status === 'BANNED' || props?.status === 'WARNED'
                 ? 'Bạn có chắc chắn muốn kích hoạt lại tài khoản này?'
                 : 'Bạn có chắc chắn muốn vô hiệu hoá tài khoản này? Nếu có vui lòng điền lý do bên dưới.'}
             </div>
@@ -409,42 +451,42 @@ function TableItem(props) {
               className='text-white bg-indigo-500 btn-sm hover:bg-indigo-600'
               onClick={handleChangeStatus}
             >
-              {props.status === 'BANNED' ? 'Kích hoạt lại' : 'Vô hiệu hoá'}
+              {props?.status === 'BANNED' || props?.status === 'WARNED'
+                ? 'Kích hoạt lại'
+                : 'Vô hiệu hoá'}
             </button>
           </div>
         </div>
       </ModalBasic>
-      {/*
+
       <ModalBasic
-        modalOpen={updateModalOpen}
-        setModalOpen={setUpdateModalOpen}
-        title='Cập nhật hạn xác thực'
+        modalOpen={updateBalanceModalOpen}
+        setModalOpen={setUpdateBalanceModalOpen}
+        title={'Cập nhật số dư tài khoản'}
       >
         <div className='px-5 py-4'>
           <div className='space-y-3'>
             <div className='font-bold'>
-              Bạn có chắc chắn muốn hồ sơ tài khoản này? Nếu có vui lòng chọn
-              ngày hết hạn xác thực mới bên dưới.
+              Hãy cập nhật số dư tài khoản bên dưới.
             </div>
-            <div>
-              <label className='block mb-1 text-sm font-medium' htmlFor='name'>
-                Ngày hết hạn xác thực
-              </label>
-              <input
-                type='date'
-                defaultValue={props.verifyTo.substring(0, 10)}
-                value={verifyTo}
-                onChange={(e) => {
-                  setVerifyTo(e.target.value);
-                  setVerifiedToValidation(null);
-                }}
-                className='w-full px-2 py-1 form-input'
-                // min={today}
-                required
-              />
-            </div>
+            {props.status !== 'BANNED' && (
+              <div>
+                <input
+                  value={updateBalance}
+                  className='w-full px-2 py-1 form-input'
+                  onChange={(e) => {
+                    setUpdateBalance(e.target.value);
+                  }}
+                  required
+                />
+              </div>
+            )}
           </div>
-          <p className='mt-2 text-red-500 ml'>{verifiedToValidation}</p>
+          {verifyDisabledReason && (
+            <p className='mt-2 text-red-500 ml'>
+              Vui lòng chọn nhập lý do vô hiệu hoá
+            </p>
+          )}
         </div>
 
         <div className='px-5 py-4 border-t border-slate-200'>
@@ -453,20 +495,20 @@ function TableItem(props) {
               className='btn-sm border-slate-200 hover:border-slate-300 text-slate-600'
               onClick={(e) => {
                 e.stopPropagation();
-                setUpdateModalOpen(false);
+                setUpdateBalanceModalOpen(false);
               }}
             >
               Huỷ
             </button>
             <button
               className='text-white bg-indigo-500 btn-sm hover:bg-indigo-600'
-              onClick={handleVerify}
+              onClick={handleUpdateBlance}
             >
               Cập nhật
             </button>
           </div>
         </div>
-      </ModalBasic> */}
+      </ModalBasic>
     </>
   );
 }
